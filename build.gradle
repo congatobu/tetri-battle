@@ -14,7 +14,7 @@ allprojects {
     apply plugin: "eclipse"
     apply plugin: "idea"
 
-    version = '1.0'
+    version = '0.1'
     ext {
         appName = 'Tetri Battle'
         gdxVersion = '1.5.4'
@@ -59,6 +59,10 @@ project(":android") {
         natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-armeabi"
         natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-armeabi-v7a"
         natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-x86"
+	compile 'com.android.support:appcompat-v7:20.0.+'
+        compile 'com.android.support:support-v4:20.0.+'
+        compile 'com.google.android.gms:play-services:5.0+'
+        compile fileTree(dir: '../libraries/libs', include: '*.jar')
     }
 }
 
@@ -78,16 +82,6 @@ project(":ios") {
     }
 }
 
-project(":core") {
-    apply plugin: "java"
-
-
-    dependencies {
-        compile "com.badlogicgames.gdx:gdx:$gdxVersion"
-        compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
-    }
-}
-
 project(":html") {
     apply plugin: "gwt"
     apply plugin: "war"
@@ -98,6 +92,18 @@ project(":html") {
         compile "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx:$gdxVersion:sources"
         compile "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion:sources"
+    }
+}
+
+project(":core") {
+    apply plugin: "java"
+
+
+    dependencies {
+        compile "com.badlogicgames.gdx:gdx:$gdxVersion"
+        compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
+        compile fileTree(dir: '../libraries/libs', include: '*.jar')
+        testCompile "junit:junit:4+"
     }
 }
 

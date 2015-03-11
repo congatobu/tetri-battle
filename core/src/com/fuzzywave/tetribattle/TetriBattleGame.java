@@ -1,4 +1,4 @@
-package com.fuzzywave.tetri-battle;
+package com.fuzzywave.tetribattle;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;

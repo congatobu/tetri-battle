@@ -1,8 +1,8 @@
-package com.fuzzywave.tetri-battle.desktop;
+package com.fuzzywave.tetribattle.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.fuzzywave.tetri-battle.TetriBattleGame;
+import com.fuzzywave.tetribattle.TetriBattleGame;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {

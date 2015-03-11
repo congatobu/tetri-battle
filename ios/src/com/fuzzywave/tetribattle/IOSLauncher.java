@@ -1,11 +1,11 @@
-package com.fuzzywave.tetri-battle;
+package com.fuzzywave.tetribattle;
 
 import org.robovm.apple.foundation.NSAutoreleasePool;
 import org.robovm.apple.uikit.UIApplication;
 
 import com.badlogic.gdx.backends.iosrobovm.IOSApplication;
 import com.badlogic.gdx.backends.iosrobovm.IOSApplicationConfiguration;
-import com.fuzzywave.tetri-battle.TetriBattleGame;
+import com.fuzzywave.tetribattle.TetriBattleGame;
 
 public class IOSLauncher extends IOSApplication.Delegate {
     @Override
