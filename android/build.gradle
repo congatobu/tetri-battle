@@ -16,12 +16,11 @@ android {
 
     signingConfigs {
         release {
-	    def localProperties = project.file("../local.properties")
-            	    Properties properties = new Properties()
-	    localProperties.withInputStream { instr ->
-	    properties.load(instr)
-	    }
-            
+            def localProperties = project.file("../local.properties")
+            Properties properties = new Properties()
+            localProperties.withInputStream { instr ->
+                properties.load(instr)
+            }
 
             // We can leave these in environment variables
             storeFile file(properties.getProperty('keystore'))
@@ -38,8 +37,26 @@ android {
     buildTypes {
         release {
             signingConfig signingConfigs.release
+
+            def localProperties = project.rootProject.file('local.properties')
+            Properties properties = new Properties()
+            localProperties.withInputStream { instr ->
+                properties.load(instr)
+            }
+            buildConfigField "String", "FLURRY_API_KEY", properties.getProperty('flurryapikey')
         }
-    }    
+
+        debug{
+            def localProperties = project.rootProject.file('local.properties')
+            Properties properties = new Properties()
+            localProperties.withInputStream { instr ->
+                properties.load(instr)
+            }
+            buildConfigField "String", "FLURRY_API_KEY", properties.getProperty('flurryapikey')
+        }
+
+
+    }
 }
 
 // needed to add JNI shared libraries to APK when compiling on CLI
@@ -51,17 +68,17 @@ tasks.withType(com.android.build.gradle.tasks.PackageApplication) { pkgTask ->
 // called every time gradle gets executed, takes the native dependencies of
 // the natives configuration, and extracts them to the proper libs/ folders
 // so they get packed with the APK.
-task copyAndroidNatives() { 
+task copyAndroidNatives() {
     file("libs/armeabi/").mkdirs();
     file("libs/armeabi-v7a/").mkdirs();
     file("libs/x86/").mkdirs();
 
     configurations.natives.files.each { jar ->
         def outputDir = null
-        if(jar.name.endsWith("natives-armeabi-v7a.jar")) outputDir = file("libs/armeabi-v7a")
-        if(jar.name.endsWith("natives-armeabi.jar")) outputDir = file("libs/armeabi")
-        if(jar.name.endsWith("natives-x86.jar")) outputDir = file("libs/x86")
-        if(outputDir != null) {
+        if (jar.name.endsWith("natives-armeabi-v7a.jar")) outputDir = file("libs/armeabi-v7a")
+        if (jar.name.endsWith("natives-armeabi.jar")) outputDir = file("libs/armeabi")
+        if (jar.name.endsWith("natives-x86.jar")) outputDir = file("libs/x86")
+        if (outputDir != null) {
             copy {
                 from zipTree(jar)
                 into outputDir
@@ -109,8 +126,8 @@ eclipse {
     }
 
     classpath {
-        plusConfigurations += [ project.configurations.compile ]        
-        containers 'com.android.ide.eclipse.adt.ANDROID_FRAMEWORK', 'com.android.ide.eclipse.adt.LIBRARIES'       
+        plusConfigurations += [project.configurations.compile]
+        containers 'com.android.ide.eclipse.adt.ANDROID_FRAMEWORK', 'com.android.ide.eclipse.adt.LIBRARIES'
     }
 
     project {
@@ -128,7 +145,7 @@ eclipse {
 idea {
     module {
         sourceDirs += file("src");
-        scopes = [ COMPILE: [plus:[project.configurations.compile]]]        
+        scopes = [COMPILE: [plus: [project.configurations.compile]]]
 
         iml {
             withXml {
@@ -138,7 +155,7 @@ idea {
                 builder.component(name: "FacetManager") {
                     facet(type: "android", name: "Android") {
                         configuration {
-                            option(name: "UPDATE_PROPERTY_FILES", value:"true")
+                            option(name: "UPDATE_PROPERTY_FILES", value: "true")
                         }
                     }
                 }
@@ -147,9 +164,9 @@ idea {
     }
 }
 
-import java.util.regex.Pattern;
-import java.util.regex.Matcher;
- 
+
+import java.util.regex.Pattern
+
 task('increaseVersionCode') << {
     def manifestFile = file("AndroidManifest.xml")
     def pattern = Pattern.compile("versionCode=\"(\\d+)\"")
@@ -160,7 +177,7 @@ task('increaseVersionCode') << {
     def manifestContent = matcher.replaceAll("versionCode=\"" + ++versionCode + "\"")
     manifestFile.write(manifestContent)
 }
- 
+
 task('incrementVersionName') << {
     def manifestFile = file("AndroidManifest.xml")
     def patternVersionNumber = Pattern.compile("versionName=\"(\\d+)\\.(\\d+)\\.(\\d+)\\.(\\d+)\"")
@@ -175,7 +192,7 @@ task('incrementVersionName') << {
     def manifestContent = matcherVersionNumber.replaceAll("versionName=\"" + mNextVersionName + "\"")
     manifestFile.write(manifestContent)
 }
- 
+
 tasks.whenTaskAdded { task ->
     if (task.name == 'generateReleaseBuildConfig' || task.name == 'generateDebugBuildConfig') {
         task.dependsOn 'increaseVersionCode'
