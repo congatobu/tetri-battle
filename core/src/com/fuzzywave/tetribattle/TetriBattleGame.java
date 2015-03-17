@@ -4,10 +4,22 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.fuzzywave.core.IAnalytics;
 import com.fuzzywave.tetribattle.assets.Assets;
 import com.fuzzywave.tetribattle.screen.SplashScreen;
 
 public class TetriBattleGame extends Game {
+
+    public static IAnalytics analytics;
+
+    public TetriBattleGame(IAnalytics analytics){
+        if(analytics == null){
+            throw new IllegalArgumentException("Analytics can not be null");
+        }
+
+        TetriBattleGame.analytics = analytics;
+        TetriBattleGame.analytics.init();
+    }
 
     @Override
     public void create() {

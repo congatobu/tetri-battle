@@ -10,9 +10,10 @@ public class AndroidLauncher extends AndroidApplication {
 	@Override
 	protected void onCreate (Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
-		initialize(new TetriBattleGame(), config);
 
-        String value = BuildConfig.FLURRY_API_KEY;
+        AndroidAnalytics androidAnalytics = new AndroidAnalytics(this);
+
+		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
+		initialize(new TetriBattleGame(androidAnalytics), config);
 	}
 }
