@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.fuzzywave.core.CoreLogger;
+import com.fuzzywave.tetribattle.TetriBattleGame;
 
 public class Assets {
     private static Assets instance;
@@ -40,8 +41,9 @@ public class Assets {
 
     public static Assets getInstance() {
         if (Assets.instance == null) {
-            CoreLogger.logInfo("Creating new Assets instance.");
+            CoreLogger.logDebug("Creating new Assets instance.");
             Assets.instance = new Assets();
+            TetriBattleGame.analytics.logEvent("ASSETS_NEW_INSTANCE");
         }
         return Assets.instance;
     }
@@ -53,6 +55,7 @@ public class Assets {
 
             Assets.instance.assetManager.dispose();
             Assets.instance = null;
+            TetriBattleGame.analytics.logEvent("ASSETS_DISPOSE");
         }
     }
 
@@ -76,15 +79,21 @@ public class Assets {
     }
 
     public void loadAssets() {
+        TetriBattleGame.analytics.logEvent("ASSETS_LOAD", true);
         // TODO loadAssets
+        TetriBattleGame.analytics.endTimedEvent("ASSETS_LOAD");
     }
 
     public void getAssets() {
+        TetriBattleGame.analytics.logEvent("ASSETS_GET", true);
         // TODO getAssets
+        TetriBattleGame.analytics.endTimedEvent("ASSETS_GET");
     }
 
     public void unloadAssets() {
+        TetriBattleGame.analytics.logEvent("ASSETS_UNLOAD", true);
         // TODO unloadAssets
+        TetriBattleGame.analytics.endTimedEvent("ASSETS_UNLOAD");
     }
 
 
