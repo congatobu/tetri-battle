@@ -4,13 +4,13 @@ package com.fuzzywave.tetribattle.screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.fuzzywave.tetribattle.TetriBattleGame;
-import com.fuzzywave.tetribattle.assets.Assets;
+import com.fuzzywave.tetribattle.TetriBattle;
 import com.fuzzywave.tetribattle.assets.SplashScreenAssets;
 
 public class SplashScreen extends AbstractScreen {
@@ -34,8 +34,7 @@ public class SplashScreen extends AbstractScreen {
     private float loadingTimer;
     private float accumulator;
 
-    public SplashScreen(TetriBattleGame game) {
-        super(game);
+    public SplashScreen() {
 
         this.initialWidth = Gdx.graphics.getWidth();
         this.initialHeight = Gdx.graphics.getHeight();
@@ -58,7 +57,7 @@ public class SplashScreen extends AbstractScreen {
     public void show() {
         super.show();
 
-        Assets.getInstance().loadAssets();
+        TetriBattle.assets.loadAssets();
 
         splashLogoString = SplashScreenAssets.splashBundle.get("SPLASH_LOGO_STRING");
         splashWaveString = SplashScreenAssets.splashBundle.get("SPLASH_WAVE_STRING");
@@ -69,8 +68,36 @@ public class SplashScreen extends AbstractScreen {
         this.loadingTimer = .0f;
         this.accumulator = .0f;
 
-        TetriBattleGame.analytics.logEvent("SPLASH_SCREEN_SHOWED");
+        GlyphLayout layout = new GlyphLayout();
+        layout.setText(SplashScreenAssets.splashLogoFont, splashLogoString);
+        logoX = -(int) (layout.width / 2);
+        logoY = (int) this.initialHeight / 4;
+
+        layout.setText(SplashScreenAssets.splashWaveFont, splashWaveString);
+        waveX = -(int) (layout.width / 2);
+        waveY = 0;
+
+         waveX2 = waveX;
+         waveY2 = waveY - (int) SplashScreenAssets.splashWaveFont.getLineHeight();
+
+        layout.setText(SplashScreenAssets.splashLoadingFont, splashLoadingString);
+        loadingX = -(int) (layout.width / 2);
+        loadingY = -(int) this.initialHeight / 4;
+
+        TetriBattle.analytics.logEvent("SPLASH_SCREEN_SHOWED");
     }
+
+    private int logoX;
+    private int logoY;
+
+    private int waveX;
+    private int waveY;
+
+    private int waveX2;
+    private int waveY2;
+
+    private int loadingX;
+    private int loadingY;
 
 
     @Override
@@ -79,6 +106,7 @@ public class SplashScreen extends AbstractScreen {
         this.viewport.update(width, height);
         SplashScreenAssets.load(width, height, null);
     }
+
 
     @Override
     public void render(float delta) {
@@ -97,10 +125,6 @@ public class SplashScreen extends AbstractScreen {
             splashTimerPercent = 1.0f;
         }
 
-        int logoX = -(int) (SplashScreenAssets.splashLogoFont.getBounds(
-                splashLogoString).width / 2);
-        int logoY = (int) this.initialHeight / 4;
-
 
         int interpolatedStringLength = (int) Interpolation.linear.apply(.0f,
                                                                         splashWaveString.length(),
@@ -110,12 +134,8 @@ public class SplashScreen extends AbstractScreen {
 
         String splashWaveText2 = splashWaveString2.substring(0, interpolatedStringLength);
 
-        int waveX = -(int) (SplashScreenAssets.splashWaveFont.getBounds(
-                splashWaveString).width / 2);
-        int waveY = 0;
 
-        int waveX2 = waveX;
-        int waveY2 = waveY - (int) SplashScreenAssets.splashWaveFont.getLineHeight();
+
 
         float loadingTimerPercent = loadingTimer / LOADING_TIME;
         if (this.loadingTimer > LOADING_TIME) {
@@ -130,9 +150,6 @@ public class SplashScreen extends AbstractScreen {
         String splashLoadingText = splashLoadingString.substring(0,
                                                                  splashLoadingString.length() - 3 + interpolatedLoadingStringLength);
 
-        int loadingX = -(int) (SplashScreenAssets.splashLoadingFont.getBounds(
-                splashLoadingString).width / 2);
-        int loadingY = -(int) this.initialHeight / 4;
 
         // render
         shapeRenderer.setProjectionMatrix(camera.combined);
@@ -163,7 +180,7 @@ public class SplashScreen extends AbstractScreen {
         boolean done = false;
         while (accumulator >= timeStep) {
 
-            done = Assets.getInstance().update(timeStepMillis);
+            done = TetriBattle.assets.update(timeStepMillis);
             accumulator -= timeStep;
         }
 

@@ -4,16 +4,17 @@ import android.os.Bundle;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
-import com.fuzzywave.tetribattle.TetriBattleGame;
+import com.fuzzywave.tetribattle.TetriBattle;
 
 public class AndroidLauncher extends AndroidApplication {
-	@Override
-	protected void onCreate (Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
         AndroidAnalytics androidAnalytics = new AndroidAnalytics(this);
+        AndroidLogger androidLogger = new AndroidLogger("TetriBattleAndroid");
 
-		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
-		initialize(new TetriBattleGame(androidAnalytics), config);
-	}
+        AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
+        initialize(new TetriBattle(androidLogger, androidAnalytics), config);
+    }
 }

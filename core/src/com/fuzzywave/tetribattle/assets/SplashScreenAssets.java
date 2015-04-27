@@ -4,8 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.I18NBundle;
-import com.fuzzywave.core.CoreLogger;
-import com.fuzzywave.tetribattle.TetriBattleGame;
+import com.fuzzywave.tetribattle.TetriBattle;
 
 import java.util.Locale;
 
@@ -26,7 +25,7 @@ public class SplashScreenAssets {
 
     public static void load(int width, int height, Locale locale) {
 
-        TetriBattleGame.analytics.logEvent("SPLASH_SCREEN_ASSETS_LOAD", true);
+        TetriBattle.analytics.logEvent("SPLASH_SCREEN_ASSETS_LOAD", true);
 
         if (splashBundle == null) {
             if (locale == null) {
@@ -37,14 +36,14 @@ public class SplashScreenAssets {
             if (locale != null) {
                 if (!splashBundle.getLocale().equals(locale)) {
                     splashBundle = I18NBundle.createBundle(Gdx.files.internal("local/splash"),
-                                                           locale);
+                            locale);
                 }
             }
         }
 
         int size = getSplashWaveFontSize(width, height);
         if (splashWaveFontSize != size) {
-            CoreLogger.logDebug("Loading Splash Wave Font for Size: " + size);
+            TetriBattle.logger.debug("Loading Splash Wave Font for Size: " + size);
             if (splashWaveFont != null) {
                 splashWaveFont.dispose();
             }
@@ -54,7 +53,7 @@ public class SplashScreenAssets {
 
         size = getSplashLogoFontSize(width, height);
         if (splashLogoFontSize != size) {
-            CoreLogger.logDebug("Loading Splash Logo Font for Size: " + size);
+            TetriBattle.logger.debug("Loading Splash Logo Font for Size: " + size);
             if (splashLogoFont != null) {
                 splashLogoFont.dispose();
             }
@@ -64,7 +63,7 @@ public class SplashScreenAssets {
 
         size = getSplashLoadingFontSize(width, height);
         if (splashLoadingFontSize != size) {
-            CoreLogger.logDebug("Loading Splash Loading Font for Size: " + size);
+            TetriBattle.logger.debug("Loading Splash Loading Font for Size: " + size);
             if (splashLoadingFont != null) {
                 splashLoadingFont.dispose();
             }
@@ -72,8 +71,8 @@ public class SplashScreenAssets {
             splashLoadingFontSize = size;
         }
 
-        CoreLogger.logDebug("Loaded Splash Screen Assets.");
-        TetriBattleGame.analytics.endTimedEvent("SPLASH_SCREEN_ASSETS_LOAD");
+        TetriBattle.logger.debug("Loaded Splash Screen Assets.");
+        TetriBattle.analytics.endTimedEvent("SPLASH_SCREEN_ASSETS_LOAD");
     }
 
     public static int getSplashWaveFontSize(int width, int height) {

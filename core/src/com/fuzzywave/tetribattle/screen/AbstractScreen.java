@@ -1,52 +1,44 @@
 package com.fuzzywave.tetribattle.screen;
 
 import com.badlogic.gdx.Screen;
-import com.fuzzywave.core.CoreLogger;
-import com.fuzzywave.tetribattle.TetriBattleGame;
+import com.fuzzywave.tetribattle.TetriBattle;
 
 
 public class AbstractScreen implements Screen {
 
-    protected TetriBattleGame game;
-
-    public AbstractScreen(TetriBattleGame game) {
-
-        this.game = game;
-    }
-
     @Override
     public void show() {
-        CoreLogger.logDebug(getName() + " show()");
+        TetriBattle.logger.debug(getName() + " show()");
     }
 
     @Override
     public void render(float delta) {
-        CoreLogger.logDebug(getName() + " render(" + delta + ")");
+        TetriBattle.logger.debug(getName() + " render(" + delta + ")");
     }
 
     @Override
     public void resize(int width, int height) {
-        CoreLogger.logDebug(getName() + " resize(" + width + ", " + height + ")");
+        TetriBattle.logger.debug(getName() + " resize(" + width + ", " + height + ")");
     }
 
     @Override
     public void pause() {
-        CoreLogger.logDebug(getName() + " pause()");
+        TetriBattle.logger.debug(getName() + " pause()");
     }
 
     @Override
     public void resume() {
-        CoreLogger.logDebug(getName() + " resume()");
+        TetriBattle.logger.debug(getName() + " resume()");
     }
 
     @Override
     public void hide() {
-        CoreLogger.logDebug(getName() + " hide()");
+        TetriBattle.logger.debug(getName() + " hide()");
     }
 
     @Override
     public void dispose() {
-        CoreLogger.logDebug(getName() + " dispose()");
+        TetriBattle.logger.debug(getName() + " dispose()");
     }
 
     public String getName() {
