@@ -1,4 +1,6 @@
-package com.fuzzywave.tetribattle.gameplay;
+package com.fuzzywave.tetribattle.gameplay.statemachine;
+
+import com.fuzzywave.tetribattle.gameplay.GameInstance;
 
 public class StateMachine {
 
