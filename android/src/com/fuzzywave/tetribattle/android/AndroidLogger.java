@@ -1,6 +1,7 @@
 package com.fuzzywave.tetribattle.android;
 
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Logger;
 import com.fuzzywave.core.ILogger;
 
@@ -15,6 +16,7 @@ public class AndroidLogger implements ILogger {
     @Override
     public void setLevel(int level) {
         logger.setLevel(level);
+        Gdx.app.setLogLevel(level);
     }
 
     @Override

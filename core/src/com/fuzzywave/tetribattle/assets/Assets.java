@@ -8,12 +8,23 @@ import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.ResolutionFileResolver;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.fuzzywave.tetribattle.TetriBattle;
 
 public class Assets {
 
     private AssetManager assetManager;
+
+    public TextureRegion tileBlueTextureRegion;
+    public TextureRegion tileGreenTextureRegion;
+    public TextureRegion tileRedTextureRegion;
+    public TextureRegion tileYellowTextureRegion;
+
+    public TextureRegion tileBlueBreakerTextureRegion;
+    public TextureRegion tileGreenBreakerTextureRegion;
+    public TextureRegion tileRedBreakerTextureRegion;
+    public TextureRegion tileYellowBreakerTextureRegion;
 
     public Assets() {
 
@@ -71,19 +82,35 @@ public class Assets {
 
     public void loadAssets() {
         TetriBattle.analytics.logEvent("ASSETS_LOAD", true);
-        // TODO loadAssets
+
+        this.assetManager.load("game/game.atlas", TextureAtlas.class);
+
         TetriBattle.analytics.endTimedEvent("ASSETS_LOAD");
     }
 
     public void getAssets() {
         TetriBattle.analytics.logEvent("ASSETS_GET", true);
-        // TODO getAssets
+
+        TextureAtlas textureAtlas = assetManager.get("game/game.atlas", TextureAtlas.class);
+
+        tileBlueTextureRegion = textureAtlas.findRegion("tileBlue");
+        tileGreenTextureRegion = textureAtlas.findRegion("tileGreen");
+        tileRedTextureRegion = textureAtlas.findRegion("tileRed");
+        tileYellowTextureRegion = textureAtlas.findRegion("tileYellow");
+
+        tileBlueBreakerTextureRegion = textureAtlas.findRegion("tileBlueBreaker");
+        tileGreenBreakerTextureRegion = textureAtlas.findRegion("tileGreenBreaker");
+        tileRedBreakerTextureRegion = textureAtlas.findRegion("tileRedBreaker");
+        tileYellowBreakerTextureRegion = textureAtlas.findRegion("tileYellowBreaker");
+
         TetriBattle.analytics.endTimedEvent("ASSETS_GET");
     }
 
     public void unloadAssets() {
         TetriBattle.analytics.logEvent("ASSETS_UNLOAD", true);
-        // TODO unloadAssets
+
+        assetManager.unload("game.atlas");
+
         TetriBattle.analytics.endTimedEvent("ASSETS_UNLOAD");
     }
 
