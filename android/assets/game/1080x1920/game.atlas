@@ -1,0 +1,62 @@
+
+game.png
+size: 512,512
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+tileBlue
+  rotate: false
+  xy: 2, 152
+  size: 148, 148
+  orig: 148, 148
+  offset: 0, 0
+  index: -1
+tileBlueBreaker
+  rotate: false
+  xy: 2, 302
+  size: 149, 148
+  orig: 149, 148
+  offset: 0, 0
+  index: -1
+tileGreen
+  rotate: false
+  xy: 153, 302
+  size: 148, 148
+  orig: 148, 148
+  offset: 0, 0
+  index: -1
+tileGreenBreaker
+  rotate: false
+  xy: 303, 184
+  size: 149, 124
+  orig: 149, 124
+  offset: 0, 0
+  index: -1
+tileRed
+  rotate: false
+  xy: 2, 2
+  size: 148, 148
+  orig: 148, 148
+  offset: 0, 0
+  index: -1
+tileRedBreaker
+  rotate: false
+  xy: 152, 12
+  size: 150, 138
+  orig: 150, 138
+  offset: 0, 0
+  index: -1
+tileYellow
+  rotate: false
+  xy: 152, 152
+  size: 148, 148
+  orig: 148, 148
+  offset: 0, 0
+  index: -1
+tileYellowBreaker
+  rotate: false
+  xy: 303, 310
+  size: 149, 140
+  orig: 149, 140
+  offset: 0, 0
+  index: -1
