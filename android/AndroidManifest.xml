@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.fuzzywave.tetribattle.android"
-    android:versionCode="17"
-    android:versionName="0.1.1.17" >
+    android:versionCode="19"
+    android:versionName="0.1.1.19" >
 
-    <uses-sdk android:minSdkVersion="14" android:targetSdkVersion="21" />
+    <uses-sdk android:minSdkVersion="14" android:targetSdkVersion="22" />
 
     <!--required permission-->
     <uses-permission android:name="android.permission.INTERNET" />
