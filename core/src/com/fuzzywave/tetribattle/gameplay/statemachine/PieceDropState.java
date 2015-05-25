@@ -5,6 +5,7 @@ import com.fuzzywave.tetribattle.TetriBattle;
 import com.fuzzywave.tetribattle.gameplay.Block;
 import com.fuzzywave.tetribattle.gameplay.BlockType;
 import com.fuzzywave.tetribattle.gameplay.GameInstance;
+import com.fuzzywave.tetribattle.gameplay.Piece;
 
 import java.util.Random;
 
@@ -14,6 +15,7 @@ public class PieceDropState implements State {
     public void enter(GameInstance gameInstance) {
         if (checkGameEnd(gameInstance)) {
             createRandomPiece(gameInstance);
+            gameInstance.getCurrentPiece().setNextDropTime(TetriBattle.PIECE_DROP_TIMEOUT);
         } else {
             // TODO game end.
         }
@@ -21,7 +23,12 @@ public class PieceDropState implements State {
 
     @Override
     public void update(GameInstance gameInstance, float delta) {
+        Piece currentPiece = gameInstance.getCurrentPiece();
+        currentPiece.setNextDropTime(currentPiece.getNextDropTime() - delta);
 
+        if(currentPiece.getNextDropTime() <= 0){
+            dropPiece();
+        }
     }
 
     @Override
@@ -36,24 +43,16 @@ public class PieceDropState implements State {
 
     private void createRandomPiece(GameInstance gameInstance) {
 
-        BlockType firstBlockType = getRandomBlockType(gameInstance.getRandom());
-        BlockType secondBlockType = getRandomBlockType(gameInstance.getRandom());
+        BlockType firstBlockType = BlockType.getRandomBlockType(gameInstance.getRandom());
+        BlockType secondBlockType = BlockType.getRandomBlockType(gameInstance.getRandom());
 
         gameInstance.getCurrentPiece().initialize(firstBlockType, secondBlockType);
     }
 
-    private BlockType getRandomBlockType(Random random) {
-        float nextFloat = random.nextFloat();
-        for (BlockType blockType : BlockType.values()) {
-            if (nextFloat < blockType.probability) {
-                return blockType;
-            } else {
-                nextFloat -= blockType.probability;
-            }
-        }
-        throw new RuntimeException(
-                "Sorry, but, I couldn't decide on a proper BlockType. @getRandomBlockType");
-        // return BlockType.EMPTY;
+
+
+    private void dropPiece(){
+
     }
 
 }

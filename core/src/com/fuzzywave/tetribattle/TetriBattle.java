@@ -3,6 +3,7 @@ package com.fuzzywave.tetribattle;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Logger;
 import com.fuzzywave.core.IAnalytics;
@@ -12,9 +13,11 @@ import com.fuzzywave.tetribattle.screen.SplashScreen;
 
 public class TetriBattle implements ApplicationListener {
 
-    public static final float WORLD_WIDTH = 720;
-    public static final float WORLD_HEIGHT = 1280;
+    public static final float WORLD_WIDTH_PIXEL = 720;
+    public static final float WORLD_HEIGHT_PIXEL = 1280;
 
+    public static final float WORLD_WIDTH = 9;
+    public static final float WORLD_HEIGHT = 16;
 
     public static final int BLOCKS_WIDTH = 6;
     public static final int BLOCKS_HEIGHT = 13;
@@ -22,6 +25,8 @@ public class TetriBattle implements ApplicationListener {
     public static final int BLOCK_SPAWN_Y = 12;
     public static final float BLOCK_SPAWN_PROBABILITY = 0.1875f;
     public static final float BREAKER_SPAWN_PROBABILITY = 0.0625f;
+
+    public static final float PIECE_DROP_TIMEOUT = 1f;
 
     // create a new game and set the initial screen
     public static Game game = new Game() {
@@ -75,6 +80,9 @@ public class TetriBattle implements ApplicationListener {
     @Override
     public void render() {
         try {
+            Gdx.gl.glClearColor(0, 0, 0, 1);
+            Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
             game.render();
         } catch (Exception e) {
             logger.error(e.getMessage(), e);

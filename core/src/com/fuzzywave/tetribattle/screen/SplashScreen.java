@@ -44,7 +44,7 @@ public class SplashScreen extends AbstractScreen {
 
         this.camera = new OrthographicCamera();
         this.viewport = new FitViewport(this.initialWidth, this.initialHeight,
-                                        this.camera);
+                this.camera);
 
         this.batch = new SpriteBatch();
         this.batch.setProjectionMatrix(this.camera.combined);
@@ -77,8 +77,8 @@ public class SplashScreen extends AbstractScreen {
         waveX = -(int) (layout.width / 2);
         waveY = 0;
 
-         waveX2 = waveX;
-         waveY2 = waveY - (int) SplashScreenAssets.splashWaveFont.getLineHeight();
+        waveX2 = waveX;
+        waveY2 = waveY - (int) SplashScreenAssets.splashWaveFont.getLineHeight();
 
         layout.setText(SplashScreenAssets.splashLoadingFont, splashLoadingString);
         loadingX = -(int) (layout.width / 2);
@@ -127,14 +127,12 @@ public class SplashScreen extends AbstractScreen {
 
 
         int interpolatedStringLength = (int) Interpolation.linear.apply(.0f,
-                                                                        splashWaveString.length(),
-                                                                        splashTimerPercent);
+                splashWaveString.length(),
+                splashTimerPercent);
         String splashWaveText = splashWaveString.substring(0,
-                                                           interpolatedStringLength);
+                interpolatedStringLength);
 
         String splashWaveText2 = splashWaveString2.substring(0, interpolatedStringLength);
-
-
 
 
         float loadingTimerPercent = loadingTimer / LOADING_TIME;
@@ -144,22 +142,22 @@ public class SplashScreen extends AbstractScreen {
         }
 
         int interpolatedLoadingStringLength = Math.round(Interpolation.linear.apply(.0f,
-                                                                                    //SPLASH_LOADING_STRING.length(),
-                                                                                    3f,
-                                                                                    loadingTimerPercent));
+                //SPLASH_LOADING_STRING.length(),
+                3f,
+                loadingTimerPercent));
         String splashLoadingText = splashLoadingString.substring(0,
-                                                                 splashLoadingString.length() - 3 + interpolatedLoadingStringLength);
+                splashLoadingString.length() - 3 + interpolatedLoadingStringLength);
 
 
         // render
         shapeRenderer.setProjectionMatrix(camera.combined);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.rect(-initialWidth / 2, -initialHeight / 2,
-                           initialWidth, initialHeight,
-                           SplashScreenAssets.splashColor1,
-                           SplashScreenAssets.splashColor2,
-                           SplashScreenAssets.splashColor1,
-                           SplashScreenAssets.splashColor2);
+                initialWidth, initialHeight,
+                SplashScreenAssets.splashColor1,
+                SplashScreenAssets.splashColor2,
+                SplashScreenAssets.splashColor1,
+                SplashScreenAssets.splashColor2);
 
         shapeRenderer.end();
 
@@ -186,9 +184,9 @@ public class SplashScreen extends AbstractScreen {
 
         if (done && (this.splashTimer >= SPLASH_MAX_TIME)) {
             // FIXME: don't call them a million time.
-            // Assets.getInstance().getAssets();
-            // TetriBattleGame.analytics.logEvent("SPLASH_SCREEN_DONE");
-            // this.game.setScreen(new MainMenuScreen(this.game));
+            TetriBattle.assets.getAssets();
+            TetriBattle.analytics.logEvent("SPLASH_SCREEN_DONE");
+            TetriBattle.game.setScreen(new GameScreen());
         }
     }
 
