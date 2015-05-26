@@ -183,12 +183,9 @@ public class SplashScreen extends AbstractScreen {
         }
 
         if (done && (this.splashTimer >= SPLASH_MAX_TIME)) {
-            // FIXME: don't call them a million time.
             TetriBattle.assets.getAssets();
             TetriBattle.analytics.logEvent("SPLASH_SCREEN_DONE");
             TetriBattle.game.setScreen(new GameScreen());
         }
     }
-
-
 }

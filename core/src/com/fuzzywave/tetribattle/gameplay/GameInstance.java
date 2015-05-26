@@ -36,7 +36,7 @@ public class GameInstance {
 
         stateMachine = new StateMachine(this);
 
-        // FIXME butun board'i blocklarla doldurma denemesi
+        // XXX butun board'i blocklarla doldurma denemesi
         for(int x = 0; x < TetriBattle.BLOCKS_WIDTH; x++) {
             for (int y = 0; y < TetriBattle.BLOCKS_HEIGHT; y++) {
                 Block block = getBlock(x, y);
