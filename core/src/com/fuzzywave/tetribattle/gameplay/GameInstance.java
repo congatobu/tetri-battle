@@ -2,7 +2,9 @@ package com.fuzzywave.tetribattle.gameplay;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.IntArray;
 import com.fuzzywave.tetribattle.TetriBattle;
 import com.fuzzywave.tetribattle.gameplay.statemachine.StateMachine;
 
@@ -36,19 +38,40 @@ public class GameInstance {
 
         stateMachine = new StateMachine(this);
 
+        stateMachine.changeState(stateMachine.pieceDropState);
         // XXX butun board'i blocklarla doldurma denemesi
+        /*
         for(int x = 0; x < TetriBattle.BLOCKS_WIDTH; x++) {
             for (int y = 0; y < TetriBattle.BLOCKS_HEIGHT; y++) {
                 Block block = getBlock(x, y);
                 block.setBlockType(BlockType.getRandomBlockType(this.random));
             }
         }
+        */
     }
 
     public void update(float delta) {
         stateMachine.update(delta);
 
         drawBoard(delta);
+
+        drawPiece(delta);
+    }
+
+    private void drawPiece(float delta) {
+        if(!currentPiece.isMovementDone()){
+            Block firstBlock = currentPiece.getFirstBlock();
+            IntArray firstBlockPosition =  currentPiece.getFirstBlockPosition();
+
+
+            Block secondBlockBlock = currentPiece.getSecondBlock();
+            IntArray secondBlockPosition =  currentPiece.getSecondBlockPosition();
+
+            TetriBattle.spriteBatch.begin();
+            drawBlock(firstBlock, firstBlockPosition.get(0), firstBlockPosition.get(1));
+            drawBlock(secondBlockBlock, secondBlockPosition.get(0), secondBlockPosition.get(1));
+            TetriBattle.spriteBatch.end();
+        }
     }
 
     private void drawBoard(float delta) {
@@ -81,8 +104,23 @@ public class GameInstance {
         return currentPiece;
     }
 
+
+    /**
+     * Gets the Random Number Generator used by this GameInstance.
+     */
     public Random getRandom() {
         return random;
     }
 
+
+    /**
+     * Checks to see if the current piece is colliding with anything.
+     *
+     * @param horizontalMovement parameter to check the next frame collisions in the given direction.
+     * @param verticalMovement parameter to check the next frame collisions in the given direction.
+     */
+    public boolean isColliding(Piece currentPiece, int horizontalMovement, int verticalMovement) {
+        // TODO collision check.
+        return false;
+    }
 }

@@ -1,39 +1,35 @@
 package com.fuzzywave.tetribattle.gameplay;
 
 
+import com.badlogic.gdx.utils.IntArray;
+import com.fuzzywave.tetribattle.TetriBattle;
+
 public class Piece {
-
-    private Block firstBlock;
-    private Block secondBlock;
-
-    private int posX;
-    private int posY;
-
-    private int rotation = 0;
-
-    private float nextDropTime;
 
     public static final int ROTATION_N = 0;
     public static final int ROTATION_E = 1;
     public static final int ROTATION_S = 2;
     public static final int ROTATION_W = 3;
+    private Block firstBlock;
+    private Block secondBlock;
+    private IntArray firstBlockPosition;
+    private IntArray secondBlockPosition;
+
+    private int rotation = 0;
+    private float nextDropTime;
+    private boolean movementDone;
 
     public Piece() {
         this.firstBlock = new Block(BlockType.EMPTY);
         this.secondBlock = new Block(BlockType.EMPTY);
-    }
 
-    public void initialize(BlockType firstBlockType, BlockType secondBlockType) {
-        this.firstBlock.setBlockType(firstBlockType);
-        this.secondBlock.setBlockType(secondBlockType);
+        this.firstBlockPosition = new IntArray(2);
+        this.firstBlockPosition.add(0);
+        this.firstBlockPosition.add(0);
 
-        // TODO where to?
-        this.rotation = ROTATION_N;
-    }
-
-    public void rotate() {
-        rotation++;
-        rotation %= 4;
+        this.secondBlockPosition = new IntArray(2);
+        this.secondBlockPosition.add(0);
+        this.secondBlockPosition.add(0);
     }
 
     public Block getFirstBlock() {
@@ -44,11 +40,70 @@ public class Piece {
         return secondBlock;
     }
 
+    public float getNextDropTime() {
+        return this.nextDropTime;
+    }
+
     public void setNextDropTime(float nextDropTime) {
         this.nextDropTime = nextDropTime;
     }
 
-    public float getNextDropTime() {
-        return this.nextDropTime;
+    public void initialize(BlockType firstBlockType, BlockType secondBlockType) {
+        this.firstBlock.setBlockType(firstBlockType);
+        this.secondBlock.setBlockType(secondBlockType);
+
+        // TODO where to?
+        this.rotation = ROTATION_N;
+
+        this.firstBlockPosition.set(0, TetriBattle.BLOCK_SPAWN_X); // x
+        this.firstBlockPosition.set(1, TetriBattle.BLOCK_SPAWN_Y + 1); // y
+
+        this.secondBlockPosition.set(0, TetriBattle.BLOCK_SPAWN_X); // x
+        this.secondBlockPosition.set(1, TetriBattle.BLOCK_SPAWN_Y + 2); // y
+
+        this.nextDropTime = TetriBattle.PIECE_DROP_TIMEOUT;
+        this.movementDone = false;
+    }
+
+    public void rotate() {
+        rotation++;
+        rotation %= 4;
+    }
+
+    public void moveDown() {
+        firstBlockPosition.incr(1, -1);
+        secondBlockPosition.incr(1, -1);
+    }
+
+    public void moveLeft() {
+        firstBlockPosition.incr(0, -1);
+        secondBlockPosition.incr(0, -1);
+    }
+
+    public void moveRight() {
+        firstBlockPosition.incr(0, 1);
+        secondBlockPosition.incr(0, 1);
+    }
+
+    public void moveUp() {
+        firstBlockPosition.incr(1, 1);
+        secondBlockPosition.incr(1, 1);
+    }
+
+
+    public boolean isMovementDone() {
+        return movementDone;
+    }
+
+    public void setMovementDone(boolean movementDone) {
+        this.movementDone = movementDone;
+    }
+
+    public IntArray getFirstBlockPosition() {
+        return this.firstBlockPosition;
+    }
+
+    public IntArray getSecondBlockPosition() {
+        return this.secondBlockPosition;
     }
 }

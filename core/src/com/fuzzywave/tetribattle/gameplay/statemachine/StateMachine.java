@@ -7,9 +7,13 @@ public class StateMachine {
     private GameInstance gameInstance;
     private State currentState;
 
+    public State pieceDropState;
+
     public StateMachine(GameInstance gameInstance) {
 
         this.gameInstance = gameInstance;
+
+        this.pieceDropState = new PieceDropState();
     }
 
     public void update(float delta) {

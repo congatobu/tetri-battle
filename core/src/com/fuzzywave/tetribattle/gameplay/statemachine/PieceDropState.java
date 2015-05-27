@@ -15,9 +15,9 @@ public class PieceDropState implements State {
     public void enter(GameInstance gameInstance) {
         if (checkGameEnd(gameInstance)) {
             createRandomPiece(gameInstance);
-            gameInstance.getCurrentPiece().setNextDropTime(TetriBattle.PIECE_DROP_TIMEOUT);
         } else {
             // TODO game end.
+            TetriBattle.analytics.logEvent("GAME_END");
         }
     }
 
@@ -27,7 +27,11 @@ public class PieceDropState implements State {
         currentPiece.setNextDropTime(currentPiece.getNextDropTime() - delta);
 
         if(currentPiece.getNextDropTime() <= 0){
-            dropPiece();
+            dropPiece(gameInstance);
+        }
+
+        if(currentPiece.isMovementDone()){
+            // TODO switch to automatic drop state.
         }
     }
 
@@ -49,10 +53,20 @@ public class PieceDropState implements State {
         gameInstance.getCurrentPiece().initialize(firstBlockType, secondBlockType);
     }
 
+    private void dropPiece(GameInstance gameInstance){
+        final int horizontalMovement = 0;
+        final int verticalMovement = -1;
 
+        Piece currentPiece = gameInstance.getCurrentPiece();
+        if(!gameInstance.isColliding(currentPiece, horizontalMovement, verticalMovement)){
+            currentPiece.moveDown();
+        }else{
+            // TODO stop the movement of the piece.
 
-    private void dropPiece(){
+            currentPiece.setMovementDone(true);
+        }
 
+        currentPiece.setNextDropTime(TetriBattle.PIECE_DROP_TIMEOUT - currentPiece.getNextDropTime());
     }
 
 }
