@@ -151,4 +151,26 @@ public class GameInstance {
 
         return false; // no collision.
     }
+
+    public void attach(Piece currentPiece) {
+
+        Block firstBlock = currentPiece.getFirstBlock();
+        IntArray firstBlockPosition = currentPiece.getFirstBlockPosition();
+        attach(firstBlock, firstBlockPosition.get(0), firstBlockPosition.get(1));
+
+        Block secondBlock = currentPiece.getSecondBlock();
+        IntArray secondBlockPosition = currentPiece.getSecondBlockPosition();
+        attach(secondBlock, secondBlockPosition.get(0), secondBlockPosition.get(1));
+    }
+
+    private void attach(Block block, int positionX, int positionY) {
+        // FIXME sadece 1 block'luk bosluk olan yerde piece spawn olup dusmeye basladiginda, ne yapilacak?
+        if (positionY < TetriBattle.BLOCKS_HEIGHT) {
+            getBlock(positionX, positionY).setBlockType(block.getBlockType());
+        }
+    }
+
+    public StateMachine getStateMachine() {
+        return stateMachine;
+    }
 }

@@ -32,6 +32,8 @@ public class PieceDropState implements State {
 
         if(currentPiece.isMovementDone()){
             // TODO switch to automatic drop state.
+            StateMachine stateMachine = gameInstance.getStateMachine();
+            stateMachine.changeState(stateMachine.pieceDropState);
         }
     }
 
@@ -61,9 +63,8 @@ public class PieceDropState implements State {
         if(!gameInstance.isColliding(currentPiece, horizontalMovement, verticalMovement)){
             currentPiece.moveDown();
         }else{
-            // TODO stop the movement of the piece.
-
             currentPiece.setMovementDone(true);
+            gameInstance.attach(currentPiece);
         }
 
         currentPiece.setNextDropTime(TetriBattle.PIECE_DROP_TIMEOUT - currentPiece.getNextDropTime());
