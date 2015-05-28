@@ -2,7 +2,6 @@ package com.fuzzywave.tetribattle.gameplay;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntArray;
 import com.fuzzywave.tetribattle.TetriBattle;
@@ -59,13 +58,13 @@ public class GameInstance {
     }
 
     private void drawPiece(float delta) {
-        if(!currentPiece.isMovementDone()){
+        if (!currentPiece.isMovementDone()) {
             Block firstBlock = currentPiece.getFirstBlock();
-            IntArray firstBlockPosition =  currentPiece.getFirstBlockPosition();
+            IntArray firstBlockPosition = currentPiece.getFirstBlockPosition();
 
 
             Block secondBlockBlock = currentPiece.getSecondBlock();
-            IntArray secondBlockPosition =  currentPiece.getSecondBlockPosition();
+            IntArray secondBlockPosition = currentPiece.getSecondBlockPosition();
 
             TetriBattle.spriteBatch.begin();
             drawBlock(firstBlock, firstBlockPosition.get(0), firstBlockPosition.get(1));
@@ -77,10 +76,10 @@ public class GameInstance {
     private void drawBoard(float delta) {
 
         TetriBattle.spriteBatch.begin();
-        for(int x = 0; x < TetriBattle.BLOCKS_WIDTH; x++){
-            for(int y = 0; y < TetriBattle.BLOCKS_HEIGHT; y++){
+        for (int x = 0; x < TetriBattle.BLOCKS_WIDTH; x++) {
+            for (int y = 0; y < TetriBattle.BLOCKS_HEIGHT; y++) {
                 Block block = getBlock(x, y);
-                if(block.getBlockType() != BlockType.EMPTY) {
+                if (block.getBlockType() != BlockType.EMPTY) {
                     drawBlock(block, x, y);
                 }
             }
@@ -100,7 +99,7 @@ public class GameInstance {
         return blocks.get(x + y * TetriBattle.BLOCKS_WIDTH);
     }
 
-    public Piece getCurrentPiece(){
+    public Piece getCurrentPiece() {
         return currentPiece;
     }
 
@@ -117,7 +116,7 @@ public class GameInstance {
      * Checks to see if the current piece is colliding with anything.
      *
      * @param horizontalMovement parameter to check the next frame collisions in the given direction.
-     * @param verticalMovement parameter to check the next frame collisions in the given direction.
+     * @param verticalMovement   parameter to check the next frame collisions in the given direction.
      */
     public boolean isColliding(Piece currentPiece, int horizontalMovement, int verticalMovement) {
         // TODO collision check.
