@@ -117,9 +117,38 @@ public class GameInstance {
      *
      * @param horizontalMovement parameter to check the next frame collisions in the given direction.
      * @param verticalMovement   parameter to check the next frame collisions in the given direction.
+     * @return true, if there is a collision.
      */
     public boolean isColliding(Piece currentPiece, int horizontalMovement, int verticalMovement) {
         // TODO collision check.
-        return false;
+
+        IntArray firstBlockPosition = currentPiece.getFirstBlockPosition();
+        IntArray secondBlockPosition = currentPiece.getSecondBlockPosition();
+
+        return (isColliding(firstBlockPosition.get(0) + horizontalMovement, firstBlockPosition.get(1) + verticalMovement) ||
+                isColliding(secondBlockPosition.get(0) + horizontalMovement, secondBlockPosition.get(1) + verticalMovement));
+    }
+
+    /**
+     * @param positionX
+     * @param positionY
+     * @return true, if there is a collision.
+     */
+    public boolean isColliding(int positionX, int positionY) {
+
+        if ((positionX < 0) || (positionX >= TetriBattle.BLOCKS_WIDTH)) {
+            return true;
+        }
+
+        if ((positionY < 0) /*|| (positionY >= TetriBattle.BLOCKS_HEIGHT)*/) {
+            return true;
+        }
+        if (positionY < TetriBattle.BLOCKS_HEIGHT) {
+            if (getBlock(positionX, positionY).getBlockType() != BlockType.EMPTY) {
+                return true;
+            }
+        }
+
+        return false; // no collision.
     }
 }

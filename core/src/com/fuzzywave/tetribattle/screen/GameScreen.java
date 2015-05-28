@@ -29,7 +29,7 @@ public class GameScreen extends AbstractScreen {
 
     @Override
     public void render(float delta) {
-        
+
         TetriBattle.spriteBatch.setProjectionMatrix(camera.combined);
 
         // TODO implement fixed time step for game loop.
