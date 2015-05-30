@@ -54,8 +54,16 @@ public class PieceDropState implements State {
         }
 
         if (gameInstance.isRotate()) {
-            // TODO rotate
+            rotate(gameInstance);
             gameInstance.setRotate(false);
+        }
+    }
+
+    private void rotate(GameInstance gameInstance) {
+        // TODO collision check & wall kick
+        Piece currentPiece = gameInstance.getCurrentPiece();
+        if (!currentPiece.isMovementDone()) {
+            currentPiece.rotate();
         }
     }
 
