@@ -72,21 +72,20 @@ public class GameScreen extends AbstractScreen {
 
     public void tap(float x, float y) {
         camera.unproject(screenCoords.set(x, y, 0));
-        if(playerGameBounds.contains(screenCoords.x, screenCoords.y)){
-            playerGameInstance.rotatePiece();
+        if (playerGameBounds.contains(screenCoords.x, screenCoords.y)) {
+            playerGameInstance.setRotate(true);
         }
     }
 
-
     public void flingRight() {
-        playerGameInstance.moveRight();
+        playerGameInstance.setMoveRight(true);
     }
 
     public void flingLeft() {
-        playerGameInstance.moveLeft();
+        playerGameInstance.setMoveLeft(true);
     }
 
     public void flingDown() {
-        playerGameInstance.fastDrop();
+        playerGameInstance.setFastDrop(true);
     }
 }

@@ -20,6 +20,12 @@ public class GameInstance {
     private float blockToPixelWidth;
     private float blockToPixelHeight;
 
+
+    private boolean moveLeft;
+    private boolean moveRight;
+    private boolean fastDrop;
+    private boolean rotate;
+
     public GameInstance(Rectangle drawingRectangle) {
 
         this.drawingRectangle = drawingRectangle;
@@ -173,19 +179,37 @@ public class GameInstance {
         return stateMachine;
     }
 
-    public void rotatePiece() {
-        TetriBattle.logger.debug("rotatePiece()");
+    public boolean isRotate() {
+        return rotate;
     }
 
-    public void moveRight() {
-        TetriBattle.logger.debug("moveRight()");
+    public void setRotate(boolean v) {
+        this.rotate = v;
     }
 
-    public void moveLeft() {
-        TetriBattle.logger.debug("moveLeft()");
+    public boolean isMoveLeft() {
+        return moveLeft;
     }
 
-    public void fastDrop() {
-        TetriBattle.logger.debug("fastDrop()");
+    public void setMoveLeft(boolean v) {
+        this.moveLeft = v;
     }
+
+    public boolean isMoveRight() {
+        return moveRight;
+    }
+
+    public void setMoveRight(boolean v) {
+        this.moveRight = v;
+    }
+
+    public boolean isFastDrop() {
+        return fastDrop;
+    }
+
+    public void setFastDrop(boolean v) {
+        this.fastDrop = v;
+    }
+
+
 }

@@ -7,8 +7,6 @@ import com.fuzzywave.tetribattle.gameplay.BlockType;
 import com.fuzzywave.tetribattle.gameplay.GameInstance;
 import com.fuzzywave.tetribattle.gameplay.Piece;
 
-import java.util.Random;
-
 public class PieceDropState implements State {
 
     @Override
@@ -26,16 +24,59 @@ public class PieceDropState implements State {
         Piece currentPiece = gameInstance.getCurrentPiece();
         currentPiece.setNextDropTime(currentPiece.getNextDropTime() - delta);
 
-        if(currentPiece.getNextDropTime() <= 0){
+        if (currentPiece.getNextDropTime() <= 0) {
             dropPiece(gameInstance);
         }
 
-        if(currentPiece.isMovementDone()){
+        checkUserInput(gameInstance);
+
+        if (currentPiece.isMovementDone()) {
             // TODO switch to automatic drop state.
             StateMachine stateMachine = gameInstance.getStateMachine();
             stateMachine.changeState(stateMachine.pieceDropState);
         }
     }
+
+    private void checkUserInput(GameInstance gameInstance) {
+        if (gameInstance.isMoveLeft()) {
+            moveLeft(gameInstance);
+            gameInstance.setMoveLeft(false);
+        }
+
+        if (gameInstance.isMoveRight()) {
+            moveRight(gameInstance);
+            gameInstance.setMoveRight(false);
+        }
+
+        if (gameInstance.isFastDrop()) {
+            // TODO fast drop
+            gameInstance.setFastDrop(false);
+        }
+
+        if (gameInstance.isRotate()) {
+            // TODO rotate
+            gameInstance.setRotate(false);
+        }
+    }
+
+    private void moveRight(GameInstance gameInstance) {
+        Piece currentPiece = gameInstance.getCurrentPiece();
+        if (!currentPiece.isMovementDone()) {
+            if (!gameInstance.isColliding(currentPiece, 1, 0)) {
+                currentPiece.moveRight();
+            }
+        }
+    }
+
+    private void moveLeft(GameInstance gameInstance) {
+        Piece currentPiece = gameInstance.getCurrentPiece();
+        if (!currentPiece.isMovementDone()) {
+            if (!gameInstance.isColliding(currentPiece, -1, 0)) {
+                currentPiece.moveLeft();
+            }
+        }
+    }
+
 
     @Override
     public void exit(GameInstance gameInstance) {
@@ -55,14 +96,14 @@ public class PieceDropState implements State {
         gameInstance.getCurrentPiece().initialize(firstBlockType, secondBlockType);
     }
 
-    private void dropPiece(GameInstance gameInstance){
+    private void dropPiece(GameInstance gameInstance) {
         final int horizontalMovement = 0;
         final int verticalMovement = -1;
 
         Piece currentPiece = gameInstance.getCurrentPiece();
-        if(!gameInstance.isColliding(currentPiece, horizontalMovement, verticalMovement)){
+        if (!gameInstance.isColliding(currentPiece, horizontalMovement, verticalMovement)) {
             currentPiece.moveDown();
-        }else{
+        } else {
             currentPiece.setMovementDone(true);
             gameInstance.attach(currentPiece);
         }
