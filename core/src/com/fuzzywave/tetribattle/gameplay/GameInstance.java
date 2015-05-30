@@ -153,7 +153,6 @@ public class GameInstance {
     }
 
     public void attach(Piece currentPiece) {
-
         Block firstBlock = currentPiece.getFirstBlock();
         IntArray firstBlockPosition = currentPiece.getFirstBlockPosition();
         attach(firstBlock, firstBlockPosition.get(0), firstBlockPosition.get(1));
@@ -172,5 +171,21 @@ public class GameInstance {
 
     public StateMachine getStateMachine() {
         return stateMachine;
+    }
+
+    public void rotatePiece() {
+        TetriBattle.logger.debug("rotatePiece()");
+    }
+
+    public void moveRight() {
+        TetriBattle.logger.debug("moveRight()");
+    }
+
+    public void moveLeft() {
+        TetriBattle.logger.debug("moveLeft()");
+    }
+
+    public void fastDrop() {
+        TetriBattle.logger.debug("fastDrop()");
     }
 }
