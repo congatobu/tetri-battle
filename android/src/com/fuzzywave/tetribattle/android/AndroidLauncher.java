@@ -15,6 +15,8 @@ public class AndroidLauncher extends AndroidApplication {
         AndroidLogger androidLogger = new AndroidLogger("TetriBattleAndroid");
 
         AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
+        config.useAccelerometer = false;
+        config.useCompass = false;
         initialize(new TetriBattle(androidLogger, androidAnalytics), config);
     }
 }
