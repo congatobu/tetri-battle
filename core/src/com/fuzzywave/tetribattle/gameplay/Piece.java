@@ -21,6 +21,7 @@ public class Piece {
     private int rotation = 0;
     private float nextDropTime;
     private boolean movementDone;
+    private boolean fastDrop;
 
     public Piece() {
         this.firstBlock = new Block(BlockType.EMPTY);
@@ -69,6 +70,7 @@ public class Piece {
 
         this.nextDropTime = TetriBattle.PIECE_DROP_TIMEOUT;
         this.movementDone = false;
+        this.fastDrop = false;
     }
 
     public void tryTorotate(GameInstance gameInstance) {
@@ -147,25 +149,40 @@ public class Piece {
         }
     }
 
-    public void moveDown() {
-        firstBlockPosition.incr(1, -1);
-        secondBlockPosition.incr(1, -1);
+    public boolean tryToMoveDown(GameInstance gameInstance) {
+        if (!isMovementDone()) {
+            if (!gameInstance.isColliding(this, 0, -1)) {
+                moveDown();
+                return true;
+            }
+        }
+        return false;
     }
 
-    public void tryToMoveLeft(GameInstance gameInstance) {
+    public boolean tryToMoveLeft(GameInstance gameInstance) {
         if (!isMovementDone()) {
             if (!gameInstance.isColliding(this, -1, 0)) {
                 moveLeft();
+                return true;
             }
         }
+        return false;
     }
 
-    public void tryToMoveRight(GameInstance gameInstance) {
+    public boolean tryToMoveRight(GameInstance gameInstance) {
         if (!isMovementDone()) {
             if (!gameInstance.isColliding(this, 1, 0)) {
                 moveRight();
+                return true;
             }
         }
+        return false;
+    }
+
+
+    public void moveDown() {
+        firstBlockPosition.incr(1, -1);
+        secondBlockPosition.incr(1, -1);
     }
 
     public void moveLeft() {
@@ -177,12 +194,6 @@ public class Piece {
         firstBlockPosition.incr(0, 1);
         secondBlockPosition.incr(0, 1);
     }
-
-    public void moveUp() {
-        firstBlockPosition.incr(1, 1);
-        secondBlockPosition.incr(1, 1);
-    }
-
 
     public boolean isMovementDone() {
         return movementDone;
@@ -198,5 +209,13 @@ public class Piece {
 
     public IntArray getSecondBlockPosition() {
         return this.secondBlockPosition;
+    }
+
+    public void setFastDrop(boolean fastDrop) {
+        this.fastDrop = fastDrop;
+    }
+
+    public boolean isFastDrop() {
+        return fastDrop;
     }
 }

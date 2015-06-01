@@ -49,7 +49,7 @@ public class PieceDropState implements State {
         }
 
         if (gameInstance.isFastDrop()) {
-            // TODO fast drop
+            gameInstance.getCurrentPiece().setFastDrop(true);
             gameInstance.setFastDrop(false);
         }
 
@@ -92,18 +92,20 @@ public class PieceDropState implements State {
     }
 
     private void dropPiece(GameInstance gameInstance) {
-        final int horizontalMovement = 0;
-        final int verticalMovement = -1;
 
         Piece currentPiece = gameInstance.getCurrentPiece();
-        if (!gameInstance.isColliding(currentPiece, horizontalMovement, verticalMovement)) {
-            currentPiece.moveDown();
-        } else {
+        if(currentPiece.tryToMoveDown(gameInstance)){
+            if(currentPiece.isFastDrop()) {
+                currentPiece.setNextDropTime(TetriBattle.PIECE_FAST_DROP_TIMEOUT - currentPiece.getNextDropTime());
+            }else{
+                currentPiece.setNextDropTime(TetriBattle.PIECE_DROP_TIMEOUT - currentPiece.getNextDropTime());
+            }
+        }else{
             currentPiece.setMovementDone(true);
             gameInstance.attach(currentPiece);
         }
 
-        currentPiece.setNextDropTime(TetriBattle.PIECE_DROP_TIMEOUT - currentPiece.getNextDropTime());
+
     }
 
 }
