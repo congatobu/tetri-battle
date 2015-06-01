@@ -15,6 +15,9 @@ public class Piece {
     private IntArray firstBlockPosition;
     private IntArray secondBlockPosition;
 
+    private IntArray tempFirstBlockPosition;
+    private IntArray tempSecondBlockPosition;
+
     private int rotation = 0;
     private float nextDropTime;
     private boolean movementDone;
@@ -30,6 +33,9 @@ public class Piece {
         this.secondBlockPosition = new IntArray(2);
         this.secondBlockPosition.add(0);
         this.secondBlockPosition.add(0);
+
+        this.tempFirstBlockPosition = new IntArray(firstBlockPosition);
+        this.tempSecondBlockPosition = new IntArray(secondBlockPosition);
     }
 
     public Block getFirstBlock() {
@@ -67,13 +73,19 @@ public class Piece {
 
     public void tryTorotate(GameInstance gameInstance) {
 
-        IntArray tempFirstBlockPosition = new IntArray(firstBlockPosition);
-        IntArray tempSecondBlockPosition = new IntArray(secondBlockPosition);
-        int tempRotation = 0;
-        int wallKickX = 0;
-        int wallKickY = 0;
-
         if (!isMovementDone()) {
+
+            tempFirstBlockPosition.set(0, firstBlockPosition.get(0));
+            tempFirstBlockPosition.set(1, firstBlockPosition.get(1));
+            tempSecondBlockPosition.set(0, secondBlockPosition.get(0));
+            tempSecondBlockPosition.set(1, secondBlockPosition.get(1));
+
+            IntArray tempFirstBlockPosition = new IntArray(firstBlockPosition);
+            IntArray tempSecondBlockPosition = new IntArray(secondBlockPosition);
+            int tempRotation = 0;
+            int wallKickX = 0;
+            int wallKickY = 0;
+
             switch (rotation) {
                 case ROTATION_N:
                     // 0 2 0   0 0 0
@@ -90,7 +102,7 @@ public class Piece {
                     // 0 1 2 > 0 1 0
                     // 0 0 0   0 2 0
                     tempSecondBlockPosition.set(0, tempFirstBlockPosition.get(0));
-                    tempSecondBlockPosition.set(1, tempFirstBlockPosition.get(1)-1);
+                    tempSecondBlockPosition.set(1, tempFirstBlockPosition.get(1) - 1);
                     wallKickX = 0;
                     wallKickY = -1;
                     tempRotation = ROTATION_S;
@@ -118,7 +130,6 @@ public class Piece {
                 default:
                     throw new RuntimeException("Undefined rotation index: " + rotation);
             }
-
 
             if (!gameInstance.isColliding(tempFirstBlockPosition, tempSecondBlockPosition, 0, 0)) {
                 firstBlockPosition.set(0, tempFirstBlockPosition.get(0));
