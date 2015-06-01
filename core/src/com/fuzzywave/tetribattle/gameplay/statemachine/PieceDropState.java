@@ -25,7 +25,7 @@ public class PieceDropState implements State {
         currentPiece.setNextDropTime(currentPiece.getNextDropTime() - delta);
 
         if (currentPiece.getNextDropTime() <= 0) {
-            dropPiece(gameInstance);
+            dropPiece(gameInstance, false);
         }
 
         checkUserInput(gameInstance);
@@ -50,6 +50,7 @@ public class PieceDropState implements State {
 
         if (gameInstance.isFastDrop()) {
             gameInstance.getCurrentPiece().setFastDrop(true);
+            dropPiece(gameInstance, true);
             gameInstance.setFastDrop(false);
         }
 
@@ -91,21 +92,18 @@ public class PieceDropState implements State {
         gameInstance.getCurrentPiece().initialize(firstBlockType, secondBlockType);
     }
 
-    private void dropPiece(GameInstance gameInstance) {
+    private void dropPiece(GameInstance gameInstance, boolean byUser) {
 
         Piece currentPiece = gameInstance.getCurrentPiece();
-        if(currentPiece.tryToMoveDown(gameInstance)){
-            if(currentPiece.isFastDrop()) {
-                currentPiece.setNextDropTime(TetriBattle.PIECE_FAST_DROP_TIMEOUT - currentPiece.getNextDropTime());
-            }else{
-                currentPiece.setNextDropTime(TetriBattle.PIECE_DROP_TIMEOUT - currentPiece.getNextDropTime());
+        if (currentPiece.tryToMoveDown(gameInstance)) {
+            if (currentPiece.isFastDrop()) {
+                currentPiece.setNextDropTime(TetriBattle.PIECE_FAST_DROP_TIMEOUT - (byUser ? 0 : currentPiece.getNextDropTime()));
+            } else {
+                currentPiece.setNextDropTime(TetriBattle.PIECE_DROP_TIMEOUT - (byUser ? 0 : currentPiece.getNextDropTime()));
             }
-        }else{
+        } else {
             currentPiece.setMovementDone(true);
             gameInstance.attach(currentPiece);
         }
-
-
     }
-
 }
