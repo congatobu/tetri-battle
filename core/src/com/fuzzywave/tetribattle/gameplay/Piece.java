@@ -73,7 +73,7 @@ public class Piece {
         this.fastDrop = false;
     }
 
-    public void tryTorotate(GameInstance gameInstance) {
+    public void tryToRotate(GameInstance gameInstance) {
 
         if (!isMovementDone()) {
 

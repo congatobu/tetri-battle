@@ -60,7 +60,7 @@ public class PieceDropState implements State {
     }
 
     private void rotate(GameInstance gameInstance) {
-        gameInstance.getCurrentPiece().tryTorotate(gameInstance);
+        gameInstance.getCurrentPiece().tryToRotate(gameInstance);
     }
 
     private void moveRight(GameInstance gameInstance) {
