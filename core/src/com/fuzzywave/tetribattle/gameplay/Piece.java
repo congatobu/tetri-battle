@@ -67,50 +67,71 @@ public class Piece {
 
     public void tryTorotate(GameInstance gameInstance) {
 
+        IntArray tempFirstBlockPosition = new IntArray(firstBlockPosition);
+        IntArray tempSecondBlockPosition = new IntArray(secondBlockPosition);
+        int tempRotation = 0;
+        int wallKickX = 0;
+        int wallKickY = 0;
+
         if (!isMovementDone()) {
             switch (rotation) {
                 case ROTATION_N:
                     // 0 2 0   0 0 0
                     // 0 1 0 > 0 1 2
                     // 0 0 0   0 0 0
-                    if (!gameInstance.isColliding(firstBlockPosition.get(0) + 1, firstBlockPosition.get(1))) {
-                        secondBlockPosition.set(0, firstBlockPosition.get(0) + 1);
-                        secondBlockPosition.set(1, firstBlockPosition.get(1));
-                        rotation = ROTATION_E;
-                    }
+                    tempSecondBlockPosition.set(0, tempFirstBlockPosition.get(0) + 1);
+                    tempSecondBlockPosition.set(1, tempFirstBlockPosition.get(1));
+                    wallKickX = -1;
+                    wallKickY = 0;
+                    tempRotation = ROTATION_E;
                     break;
                 case ROTATION_E:
                     // 0 0 0   0 0 0
                     // 0 1 2 > 0 1 0
                     // 0 0 0   0 2 0
-                    if (!gameInstance.isColliding(firstBlockPosition.get(0), firstBlockPosition.get(1) - 1)) {
-                        secondBlockPosition.set(0, firstBlockPosition.get(0));
-                        secondBlockPosition.set(1, firstBlockPosition.get(1) - 1);
-                        rotation = ROTATION_S;
-                    }
+                    tempSecondBlockPosition.set(0, tempFirstBlockPosition.get(0));
+                    tempSecondBlockPosition.set(1, tempFirstBlockPosition.get(1)-1);
+                    wallKickX = 0;
+                    wallKickY = -1;
+                    tempRotation = ROTATION_S;
                     break;
                 case ROTATION_S:
                     // 0 0 0   0 0 0
                     // 0 1 0 > 0 0 0
                     // 0 2 0   0 2 1
-                    if (!gameInstance.isColliding(secondBlockPosition.get(0) + 1, secondBlockPosition.get(1))) {
-                        firstBlockPosition.set(0, secondBlockPosition.get(0) + 1);
-                        firstBlockPosition.set(1, secondBlockPosition.get(1));
-                        rotation = ROTATION_W;
-                    }
+                    tempFirstBlockPosition.set(0, tempSecondBlockPosition.get(0) + 1);
+                    tempFirstBlockPosition.set(1, tempSecondBlockPosition.get(1));
+                    wallKickX = -1;
+                    wallKickY = 0;
+                    tempRotation = ROTATION_W;
                     break;
                 case ROTATION_W:
                     // 0 0 0   0 0 0
                     // 0 2 1 > 0 2 0
                     // 0 0 0   0 1 0
-                    if (!gameInstance.isColliding(secondBlockPosition.get(0), secondBlockPosition.get(1) - 1)) {
-                        firstBlockPosition.set(0, secondBlockPosition.get(0));
-                        firstBlockPosition.set(1, secondBlockPosition.get(1) - 1);
-                        rotation = ROTATION_N;
-                    }
+                    tempFirstBlockPosition.set(0, tempSecondBlockPosition.get(0));
+                    tempFirstBlockPosition.set(1, tempSecondBlockPosition.get(1) - 1);
+                    wallKickX = 0;
+                    wallKickY = -1;
+                    tempRotation = ROTATION_N;
                     break;
                 default:
                     throw new RuntimeException("Undefined rotation index: " + rotation);
+            }
+
+
+            if (!gameInstance.isColliding(tempFirstBlockPosition, tempSecondBlockPosition, 0, 0)) {
+                firstBlockPosition.set(0, tempFirstBlockPosition.get(0));
+                firstBlockPosition.set(1, tempFirstBlockPosition.get(1));
+                secondBlockPosition.set(0, tempSecondBlockPosition.get(0));
+                secondBlockPosition.set(1, tempSecondBlockPosition.get(1));
+                rotation = tempRotation;
+            } else if (!gameInstance.isColliding(tempFirstBlockPosition, tempSecondBlockPosition, wallKickX, wallKickY)) { // try again with the wall-kick.
+                firstBlockPosition.set(0, tempFirstBlockPosition.get(0) + wallKickX);
+                firstBlockPosition.set(1, tempFirstBlockPosition.get(1) + wallKickY);
+                secondBlockPosition.set(0, tempSecondBlockPosition.get(0) + wallKickX);
+                secondBlockPosition.set(1, tempSecondBlockPosition.get(1) + wallKickY);
+                rotation = tempRotation;
             }
         }
     }

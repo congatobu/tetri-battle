@@ -60,7 +60,6 @@ public class PieceDropState implements State {
     }
 
     private void rotate(GameInstance gameInstance) {
-        // TODO collision check & wall kick
         gameInstance.getCurrentPiece().tryTorotate(gameInstance);
     }
 

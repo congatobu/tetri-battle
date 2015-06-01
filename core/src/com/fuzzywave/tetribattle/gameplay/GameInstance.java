@@ -126,13 +126,13 @@ public class GameInstance {
      * @return true, if there is a collision.
      */
     public boolean isColliding(Piece currentPiece, int horizontalMovement, int verticalMovement) {
-        // TODO collision check.
+        return isColliding(currentPiece.getFirstBlockPosition(), currentPiece.getSecondBlockPosition(), horizontalMovement, verticalMovement);
+    }
 
-        IntArray firstBlockPosition = currentPiece.getFirstBlockPosition();
-        IntArray secondBlockPosition = currentPiece.getSecondBlockPosition();
 
-        return (isColliding(firstBlockPosition.get(0) + horizontalMovement, firstBlockPosition.get(1) + verticalMovement) ||
-                isColliding(secondBlockPosition.get(0) + horizontalMovement, secondBlockPosition.get(1) + verticalMovement));
+    public boolean isColliding(IntArray firstPos, IntArray secondPos, int horizontalMovement, int verticalMovement) {
+        return isColliding(firstPos.get(0) + horizontalMovement, firstPos.get(1) + verticalMovement) ||
+                isColliding(secondPos.get(0) + horizontalMovement, secondPos.get(1) + verticalMovement);
     }
 
     /**
