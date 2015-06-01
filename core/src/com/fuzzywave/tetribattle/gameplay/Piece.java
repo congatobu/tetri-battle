@@ -65,48 +65,75 @@ public class Piece {
         this.movementDone = false;
     }
 
-    public void rotate() {
-        switch (rotation) {
-            case ROTATION_N:
-                // 0 2 0   0 0 0
-                // 0 1 0 > 0 1 2
-                // 0 0 0   0 0 0
-                secondBlockPosition.set(0, firstBlockPosition.get(0) + 1);
-                secondBlockPosition.set(1, firstBlockPosition.get(1));
-                rotation = ROTATION_E;
-                break;
-            case ROTATION_E:
-                // 0 0 0   0 0 0
-                // 0 1 2 > 0 1 0
-                // 0 0 0   0 2 0
-                secondBlockPosition.set(0, firstBlockPosition.get(0));
-                secondBlockPosition.set(1, firstBlockPosition.get(1) - 1);
-                rotation = ROTATION_S;
-                break;
-            case ROTATION_S:
-                // 0 0 0   0 0 0
-                // 0 1 0 > 0 0 0
-                // 0 2 0   0 2 1
-                firstBlockPosition.set(0, secondBlockPosition.get(0) + 1);
-                firstBlockPosition.set(1, secondBlockPosition.get(1));
-                rotation = ROTATION_W;
-                break;
-            case ROTATION_W:
-                // 0 0 0   0 0 0
-                // 0 2 1 > 0 2 0
-                // 0 0 0   0 1 0
-                firstBlockPosition.set(0, secondBlockPosition.get(0));
-                firstBlockPosition.set(1, secondBlockPosition.get(1) - 1);
-                rotation = ROTATION_N;
-                break;
-            default:
-                throw new RuntimeException("Undefined rotation index: " + rotation);
+    public void tryTorotate(GameInstance gameInstance) {
+
+        if (!isMovementDone()) {
+            switch (rotation) {
+                case ROTATION_N:
+                    // 0 2 0   0 0 0
+                    // 0 1 0 > 0 1 2
+                    // 0 0 0   0 0 0
+                    if (!gameInstance.isColliding(firstBlockPosition.get(0) + 1, firstBlockPosition.get(1))) {
+                        secondBlockPosition.set(0, firstBlockPosition.get(0) + 1);
+                        secondBlockPosition.set(1, firstBlockPosition.get(1));
+                        rotation = ROTATION_E;
+                    }
+                    break;
+                case ROTATION_E:
+                    // 0 0 0   0 0 0
+                    // 0 1 2 > 0 1 0
+                    // 0 0 0   0 2 0
+                    if (!gameInstance.isColliding(firstBlockPosition.get(0), firstBlockPosition.get(1) - 1)) {
+                        secondBlockPosition.set(0, firstBlockPosition.get(0));
+                        secondBlockPosition.set(1, firstBlockPosition.get(1) - 1);
+                        rotation = ROTATION_S;
+                    }
+                    break;
+                case ROTATION_S:
+                    // 0 0 0   0 0 0
+                    // 0 1 0 > 0 0 0
+                    // 0 2 0   0 2 1
+                    if (!gameInstance.isColliding(secondBlockPosition.get(0) + 1, secondBlockPosition.get(1))) {
+                        firstBlockPosition.set(0, secondBlockPosition.get(0) + 1);
+                        firstBlockPosition.set(1, secondBlockPosition.get(1));
+                        rotation = ROTATION_W;
+                    }
+                    break;
+                case ROTATION_W:
+                    // 0 0 0   0 0 0
+                    // 0 2 1 > 0 2 0
+                    // 0 0 0   0 1 0
+                    if (!gameInstance.isColliding(secondBlockPosition.get(0), secondBlockPosition.get(1) - 1)) {
+                        firstBlockPosition.set(0, secondBlockPosition.get(0));
+                        firstBlockPosition.set(1, secondBlockPosition.get(1) - 1);
+                        rotation = ROTATION_N;
+                    }
+                    break;
+                default:
+                    throw new RuntimeException("Undefined rotation index: " + rotation);
+            }
         }
     }
 
     public void moveDown() {
         firstBlockPosition.incr(1, -1);
         secondBlockPosition.incr(1, -1);
+    }
+
+    public void tryToMoveLeft(GameInstance gameInstance) {
+        if (!isMovementDone()) {
+            if (!gameInstance.isColliding(this, -1, 0)) {
+                moveLeft();
+            }
+        }
+    }
+
+    public void tryToMoveRight(GameInstance gameInstance) {
+        if (!isMovementDone()) {
+            if (!gameInstance.isColliding(this, 1, 0)) {
+                moveRight();
+            }
+        }
     }
 
     public void moveLeft() {
