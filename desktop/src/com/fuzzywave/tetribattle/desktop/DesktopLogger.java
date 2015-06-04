@@ -31,7 +31,7 @@ public class DesktopLogger implements ILogger {
 
     @Override
     public void error(String msg, Exception e) {
-        logger.error(msg);
+        logger.error(msg, e);
     }
 
     @Override

@@ -3,6 +3,8 @@ package com.fuzzywave.tetribattle.assets;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.I18NBundle;
 import com.fuzzywave.tetribattle.TetriBattle;
 
@@ -13,17 +15,23 @@ public class SplashScreenAssets {
     public static BitmapFont splashLogoFont;
     public static BitmapFont splashLoadingFont;
     public static BitmapFont splashWaveFont;
+
     public static Color splashColor1 = Color.valueOf("fe8c00");
     public static Color splashColor2 = Color.valueOf("f83600");
     public static I18NBundle splashBundle;
-    private static String splashLogoFontFileName = "fonts/FUZZYWAVE.TTF";
-    private static int splashLogoFontSize;
-    private static String splashLoadingFontFileName = "fonts/LOADING.ttf";
-    private static int splashLoadingFontSize;
-    private static String splashWaveFontFileName = "fonts/GRAPH.TTF";
-    private static int splashWaveFontSize;
 
-    public static void load(int width, int height, Locale locale) {
+    public static DistanceFieldShader distanceFieldShader = new DistanceFieldShader();
+
+    private static String splashLogoFontFileName = "fonts/FUZZYWAVE.fnt";
+    private static String splashLogoFontGlyphFileName = "fonts/FUZZYWAVE.png";
+
+    private static String splashLoadingFontFileName = "fonts/LOADING.fnt";
+    private static String splashLoadingFontGlyphFileName = "fonts/LOADING.png";
+
+    private static String splashWaveFontFileName = "fonts/GRAPH.fnt";
+    private static String splashWaveFontGlyphFileName = "fonts/GRAPH.png";
+
+    public static void load(Locale locale) {
 
         TetriBattle.analytics.logEvent("SPLASH_SCREEN_ASSETS_LOAD", true);
 
@@ -41,64 +49,40 @@ public class SplashScreenAssets {
             }
         }
 
-        int size = getSplashWaveFontSize(width, height);
-        if (splashWaveFontSize != size) {
-            TetriBattle.logger.debug("Loading Splash Wave Font for Size: " + size);
-            if (splashWaveFont != null) {
-                splashWaveFont.dispose();
-            }
-            splashWaveFont = Assets.loadFont(splashWaveFontFileName, size);
-            splashWaveFontSize = size;
+        if (splashWaveFont != null) {
+            splashWaveFont.dispose();
         }
+        splashWaveFont = Assets.loadFont(splashWaveFontFileName, splashWaveFontGlyphFileName);
 
-        size = getSplashLogoFontSize(width, height);
-        if (splashLogoFontSize != size) {
-            TetriBattle.logger.debug("Loading Splash Logo Font for Size: " + size);
-            if (splashLogoFont != null) {
-                splashLogoFont.dispose();
-            }
-            splashLogoFont = Assets.loadFont(splashLogoFontFileName, size);
-            splashLogoFontSize = size;
+        if (splashLogoFont != null) {
+            splashLogoFont.dispose();
         }
+        splashLogoFont = Assets.loadFont(splashLogoFontFileName, splashLogoFontGlyphFileName);
 
-        size = getSplashLoadingFontSize(width, height);
-        if (splashLoadingFontSize != size) {
-            TetriBattle.logger.debug("Loading Splash Loading Font for Size: " + size);
-            if (splashLoadingFont != null) {
-                splashLoadingFont.dispose();
-            }
-            splashLoadingFont = Assets.loadFont(splashLoadingFontFileName, size);
-            splashLoadingFontSize = size;
+        if (splashLoadingFont != null) {
+            splashLoadingFont.dispose();
         }
+        splashLoadingFont = Assets.loadFont(splashLoadingFontFileName, splashLoadingFontGlyphFileName);
 
-        TetriBattle.logger.debug("Loaded Splash Screen Assets.");
         TetriBattle.analytics.endTimedEvent("SPLASH_SCREEN_ASSETS_LOAD");
     }
 
-    public static int getSplashWaveFontSize(int width, int height) {
+    public static class DistanceFieldShader extends ShaderProgram {
+        public DistanceFieldShader() {
+            super(Gdx.files.internal("shaders/distancefield.vert"), Gdx.files.internal("shaders/distancefield.frag"));
+            if (!isCompiled()) {
+                throw new RuntimeException("Shader compilation failed:\n" + getLog());
+            }
+        }
 
-        int defaultWidth = 480;
-        int defaultSize = 50;
-
-        int size = width * defaultSize / defaultWidth;
-        return size;
-
-    }
-
-    public static int getSplashLogoFontSize(int width, int height) {
-        int defaultWidth = 480;
-        int defaultSize = 70;
-
-        int size = width * defaultSize / defaultWidth;
-        return size;
-    }
-
-    public static int getSplashLoadingFontSize(int width, int height) {
-        int defaultWidth = 480;
-        int defaultSize = 50;
-
-        int size = width * defaultSize / defaultWidth;
-        return size;
+        /**
+         * @param smoothing a value between 0 and 1
+         */
+        public void setSmoothing(float smoothing) {
+            float delta = 0.5f * MathUtils.clamp(smoothing, 0, 1);
+            setUniformf("u_lower", 0.5f - delta);
+            setUniformf("u_upper", 0.5f + delta);
+        }
     }
 
 }

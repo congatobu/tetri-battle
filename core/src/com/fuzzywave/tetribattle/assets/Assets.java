@@ -6,25 +6,23 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.TextureAtlasLoader;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.ResolutionFileResolver;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.fuzzywave.tetribattle.TetriBattle;
 
 public class Assets {
-
-    private AssetManager assetManager;
 
     public TextureRegion tileBlueTextureRegion;
     public TextureRegion tileGreenTextureRegion;
     public TextureRegion tileRedTextureRegion;
     public TextureRegion tileYellowTextureRegion;
-
     public TextureRegion tileBlueBreakerTextureRegion;
     public TextureRegion tileGreenBreakerTextureRegion;
     public TextureRegion tileRedBreakerTextureRegion;
     public TextureRegion tileYellowBreakerTextureRegion;
+    private AssetManager assetManager;
 
     public Assets() {
 
@@ -54,20 +52,16 @@ public class Assets {
         TetriBattle.analytics.endTimedEvent("ASSETS_NEW_INSTANCE");
     }
 
+    public static BitmapFont loadFont(String fntName, String glypName) {
+        Texture texture = new Texture(Gdx.files.internal(glypName), true);
+        texture.setFilter(Texture.TextureFilter.MipMapLinearNearest, Texture.TextureFilter.Linear);
+        return new BitmapFont(Gdx.files.internal(fntName), new TextureRegion(texture), false);
+    }
 
     public void dispose() {
         TetriBattle.logger.info("Disposing Assets instance.");
         TetriBattle.analytics.logEvent("ASSETS_DISPOSE");
         assetManager.dispose();
-    }
-
-    public static BitmapFont loadFont(String fileName, int size) {
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(fileName));
-        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = size;
-        BitmapFont font = generator.generateFont(parameter);
-        generator.dispose();
-        return font;
     }
 
     public boolean update(int millis) {

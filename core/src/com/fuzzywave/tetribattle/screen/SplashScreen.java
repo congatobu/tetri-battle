@@ -1,13 +1,12 @@
 package com.fuzzywave.tetribattle.screen;
 
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Interpolation;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.fuzzywave.tetribattle.TetriBattle;
@@ -20,12 +19,9 @@ public class SplashScreen extends AbstractScreen {
     private static final float LOADING_TIME = 1.0f;
     private final float timeStep = 1.0f / 60.0f;
     private final int timeStepMillis = Math.round(timeStep * 1000);
-    private float initialWidth;
-    private float initialHeight;
+    private GlyphLayout layout = new GlyphLayout();
     private Viewport viewport;
     private Camera camera;
-    private SpriteBatch batch;
-    private ShapeRenderer shapeRenderer;
     private String splashLogoString;
     private String splashWaveString;
     private String splashWaveString2;
@@ -34,82 +30,52 @@ public class SplashScreen extends AbstractScreen {
     private float loadingTimer;
     private float accumulator;
 
+
     public SplashScreen() {
 
-        this.initialWidth = Gdx.graphics.getWidth();
-        this.initialHeight = Gdx.graphics.getHeight();
-
         // TODO read default locale from user conf.
-        SplashScreenAssets.load((int) this.initialWidth, (int) this.initialHeight, null);
+        SplashScreenAssets.load(null);
 
         this.camera = new OrthographicCamera();
-        this.viewport = new FitViewport(this.initialWidth, this.initialHeight,
+        this.viewport = new FitViewport(TetriBattle.WORLD_WIDTH_PIXEL, TetriBattle.WORLD_HEIGHT_PIXEL,
                 this.camera);
-
-        this.batch = new SpriteBatch();
-        this.batch.setProjectionMatrix(this.camera.combined);
-
-        this.shapeRenderer = new ShapeRenderer();
-        this.shapeRenderer.setProjectionMatrix(this.camera.combined);
     }
 
     @Override
     public void show() {
         super.show();
 
+        TetriBattle.spriteBatch.setProjectionMatrix(this.camera.combined);
+        TetriBattle.shapeRenderer.setProjectionMatrix(this.camera.combined);
+
         TetriBattle.assets.loadAssets();
 
-        splashLogoString = SplashScreenAssets.splashBundle.get("SPLASH_LOGO_STRING");
-        splashWaveString = SplashScreenAssets.splashBundle.get("SPLASH_WAVE_STRING");
-        splashWaveString2 = SplashScreenAssets.splashBundle.get("SPLASH_WAVE_STRING_2");
-        splashLoadingString = SplashScreenAssets.splashBundle.get("SPLASH_LOADING_STRING");
+        this.splashLogoString = SplashScreenAssets.splashBundle.get("SPLASH_LOGO_STRING");
+        this.splashWaveString = SplashScreenAssets.splashBundle.get("SPLASH_WAVE_STRING");
+        this.splashWaveString2 = SplashScreenAssets.splashBundle.get("SPLASH_WAVE_STRING_2");
+        this.splashLoadingString = SplashScreenAssets.splashBundle.get("SPLASH_LOADING_STRING");
 
         this.splashTimer = .0f;
         this.loadingTimer = .0f;
         this.accumulator = .0f;
 
-        GlyphLayout layout = new GlyphLayout();
-        layout.setText(SplashScreenAssets.splashLogoFont, splashLogoString);
-        logoX = -(int) (layout.width / 2);
-        logoY = (int) this.initialHeight / 4;
-
-        layout.setText(SplashScreenAssets.splashWaveFont, splashWaveString);
-        waveX = -(int) (layout.width / 2);
-        waveY = 0;
-
-        waveX2 = waveX;
-        waveY2 = waveY - (int) SplashScreenAssets.splashWaveFont.getLineHeight();
-
-        layout.setText(SplashScreenAssets.splashLoadingFont, splashLoadingString);
-        loadingX = -(int) (layout.width / 2);
-        loadingY = -(int) this.initialHeight / 4;
-
         TetriBattle.analytics.logEvent("SPLASH_SCREEN_SHOWED");
     }
-
-    private int logoX;
-    private int logoY;
-
-    private int waveX;
-    private int waveY;
-
-    private int waveX2;
-    private int waveY2;
-
-    private int loadingX;
-    private int loadingY;
-
 
     @Override
     public void resize(int width, int height) {
         super.resize(width, height);
         this.viewport.update(width, height);
-        SplashScreenAssets.load(width, height, null);
     }
 
 
     @Override
     public void render(float delta) {
+
+        // bunu neden her render call'inda yapiyoruz yaw?
+        TetriBattle.spriteBatch.setProjectionMatrix(camera.combined);
+        TetriBattle.shapeRenderer.setProjectionMatrix(camera.combined);
+
 
         if (delta > 0.25f) {
             delta = 0.25f;
@@ -125,15 +91,11 @@ public class SplashScreen extends AbstractScreen {
             splashTimerPercent = 1.0f;
         }
 
-
         int interpolatedStringLength = (int) Interpolation.linear.apply(.0f,
                 splashWaveString.length(),
                 splashTimerPercent);
-        String splashWaveText = splashWaveString.substring(0,
-                interpolatedStringLength);
-
+        String splashWaveText = splashWaveString.substring(0, interpolatedStringLength);
         String splashWaveText2 = splashWaveString2.substring(0, interpolatedStringLength);
-
 
         float loadingTimerPercent = loadingTimer / LOADING_TIME;
         if (this.loadingTimer > LOADING_TIME) {
@@ -149,30 +111,75 @@ public class SplashScreen extends AbstractScreen {
                 splashLoadingString.length() - 3 + interpolatedLoadingStringLength);
 
 
-        // render
-        shapeRenderer.setProjectionMatrix(camera.combined);
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.rect(-initialWidth / 2, -initialHeight / 2,
-                initialWidth, initialHeight,
+        // background gradient.
+        TetriBattle.shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        TetriBattle.shapeRenderer.rect(-TetriBattle.WORLD_WIDTH_PIXEL / 2,
+                -TetriBattle.WORLD_HEIGHT_PIXEL / 2,
+                TetriBattle.WORLD_WIDTH_PIXEL,
+                TetriBattle.WORLD_HEIGHT_PIXEL,
                 SplashScreenAssets.splashColor1,
                 SplashScreenAssets.splashColor2,
                 SplashScreenAssets.splashColor1,
                 SplashScreenAssets.splashColor2);
 
-        shapeRenderer.end();
+        TetriBattle.shapeRenderer.end();
 
 
-        batch.setProjectionMatrix(camera.combined);
-        batch.begin();
+        TetriBattle.spriteBatch.begin();
 
-        SplashScreenAssets.splashLogoFont.draw(batch, splashLogoString, logoX, logoY);
 
-        SplashScreenAssets.splashWaveFont.draw(batch, splashWaveText, waveX, waveY);
-        SplashScreenAssets.splashWaveFont.draw(batch, splashWaveText2, waveX2, waveY2);
+        TetriBattle.spriteBatch.setShader(SplashScreenAssets.distanceFieldShader);
 
-        SplashScreenAssets.splashLoadingFont.draw(batch, splashLoadingText, loadingX, loadingY);
+        float logoSmoothing = 1 / 8f;
+        float logoScale = 3.0f;
+        float logoBaseLineShift = -8;
 
-        batch.end();
+        SplashScreenAssets.splashLogoFont.getData().setScale(logoScale);
+        layout.setText(SplashScreenAssets.splashLogoFont, splashLogoString, 0, splashLogoString.length(),
+                SplashScreenAssets.splashLogoFont.getColor(), 0, Align.center, false, null);
+        SplashScreenAssets.distanceFieldShader.setSmoothing(logoSmoothing / logoScale);
+        SplashScreenAssets.splashLogoFont.draw(TetriBattle.spriteBatch, layout,
+                0,
+                this.viewport.getScreenHeight() / 2 + logoScale * logoBaseLineShift);
+
+
+
+        float waveSmoothing = 1 / 8f;
+        float waveScale = 3.1f;
+        float waveBaseLineShift = -8;
+        SplashScreenAssets.splashWaveFont.getData().setScale(waveScale);
+        SplashScreenAssets.distanceFieldShader.setSmoothing(waveSmoothing / waveScale);
+
+        layout.setText(SplashScreenAssets.splashWaveFont, splashWaveText, 0, splashWaveText.length(),
+                SplashScreenAssets.splashWaveFont.getColor(), 0, Align.left, false, null);
+        SplashScreenAssets.splashWaveFont.draw(TetriBattle.spriteBatch, layout,
+                -TetriBattle.WORLD_WIDTH_PIXEL / 2,
+                0);
+
+        float h = layout.height;
+        layout.setText(SplashScreenAssets.splashWaveFont, splashWaveText2, 0, splashWaveText2.length(),
+                SplashScreenAssets.splashWaveFont.getColor(), 0, Align.left, false, null);
+        SplashScreenAssets.splashWaveFont.draw(TetriBattle.spriteBatch, layout,
+                -TetriBattle.WORLD_WIDTH_PIXEL / 2,
+                (-h + waveBaseLineShift -2) * waveScale);
+
+
+
+        float loadingSmoothing = 1 / 8f;
+        float loadingScale = 3.1f;
+        float loadingBaseLineShift = -8;
+        SplashScreenAssets.splashLoadingFont.getData().setScale(loadingScale);
+        SplashScreenAssets.distanceFieldShader.setSmoothing(loadingSmoothing / loadingScale);
+
+        layout.setText(SplashScreenAssets.splashLoadingFont, splashLoadingText, 0, splashLoadingText.length(),
+                SplashScreenAssets.splashLoadingFont.getColor(), 0, Align.left, false, null);
+        SplashScreenAssets.splashLoadingFont.draw(TetriBattle.spriteBatch, layout,
+                -layout.width,
+                -TetriBattle.WORLD_HEIGHT_PIXEL / 3);
+
+        //TetriBattle.spriteBatch.flush();
+        TetriBattle.spriteBatch.setShader(null);
+        TetriBattle.spriteBatch.end();
 
         // asset loader
         boolean done = false;

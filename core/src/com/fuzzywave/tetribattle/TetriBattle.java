@@ -5,6 +5,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Logger;
 import com.fuzzywave.core.IAnalytics;
 import com.fuzzywave.core.ILogger;
@@ -39,6 +40,8 @@ public class TetriBattle implements ApplicationListener {
 
     public static SpriteBatch spriteBatch;
 
+    public static ShapeRenderer shapeRenderer;
+
     public static IAnalytics analytics;
 
     public static ILogger logger;
@@ -58,6 +61,8 @@ public class TetriBattle implements ApplicationListener {
             analytics.init();
 
             spriteBatch = new SpriteBatch();
+
+            shapeRenderer = new ShapeRenderer();
 
             assets = new Assets();
 
