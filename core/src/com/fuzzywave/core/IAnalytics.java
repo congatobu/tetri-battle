@@ -4,20 +4,20 @@ import java.util.Map;
 
 public interface IAnalytics {
 
-    public void init();
+    void init();
 
-    public void logEvent(String eventId);
+    void logEvent(String eventId);
 
-    public void logEvent(String eventId, Map<String, String> parameters);
+    void logEvent(String eventId, Map<String, String> parameters);
 
-    public void logEvent(String eventId, Map<String, String> parameters, boolean timed);
+    void logEvent(String eventId, Map<String, String> parameters, boolean timed);
 
-    public void logEvent(String eventId, boolean timed);
+    void logEvent(String eventId, boolean timed);
 
-    public void endTimedEvent(String eventId);
+    void endTimedEvent(String eventId);
 
-    public void endTimedEvent(String eventId, Map<String, String> parameters);
+    void endTimedEvent(String eventId, Map<String, String> parameters);
 
-    public void onError(String errorId, String message, Throwable exception);
+    void onError(String errorId, String message, Throwable exception);
 
 }
