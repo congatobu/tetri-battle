@@ -1,4 +1,4 @@
-package com.fuzzywave.core;
+package com.fuzzywave.tetribattle;
 
 import java.util.Map;
 

@@ -1,7 +1,7 @@
 package com.fuzzywave.tetribattle.android;
 
 import com.flurry.android.FlurryAgent;
-import com.fuzzywave.core.IAnalytics;
+import com.fuzzywave.tetribattle.IAnalytics;
 
 import java.util.Map;
 

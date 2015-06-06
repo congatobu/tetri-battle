@@ -2,7 +2,7 @@ package com.fuzzywave.tetribattle.client;
 
 
 import com.badlogic.gdx.utils.Logger;
-import com.fuzzywave.core.IAnalytics;
+import com.fuzzywave.tetribattle.IAnalytics;
 
 import java.util.Map;
 

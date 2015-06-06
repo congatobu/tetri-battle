@@ -3,7 +3,7 @@ package com.fuzzywave.tetribattle.android;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Logger;
-import com.fuzzywave.core.ILogger;
+import com.fuzzywave.tetribattle.ILogger;
 
 public class AndroidLogger implements ILogger {
 

@@ -7,8 +7,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Logger;
-import com.fuzzywave.core.IAnalytics;
-import com.fuzzywave.core.ILogger;
 import com.fuzzywave.tetribattle.assets.Assets;
 import com.fuzzywave.tetribattle.screen.SplashScreen;
 

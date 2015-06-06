@@ -1,4 +1,4 @@
-package com.fuzzywave.core;
+package com.fuzzywave.tetribattle;
 
 public interface ILogger {
 
