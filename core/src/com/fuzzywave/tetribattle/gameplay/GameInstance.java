@@ -58,7 +58,6 @@ public class GameInstance {
     public void update(float delta) {
         stateMachine.update(delta);
 
-
         drawBackground(delta);
 
         drawBoard(delta);

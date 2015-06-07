@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
@@ -27,8 +28,8 @@ public class GameScreen extends AbstractScreen {
 
         this.camera = new OrthographicCamera();
         this.viewport = new FitViewport(TetriBattle.WORLD_WIDTH_PIXEL,
-                TetriBattle.WORLD_HEIGHT_PIXEL,
-                this.camera);
+                                        TetriBattle.WORLD_HEIGHT_PIXEL,
+                                        this.camera);
         TetriBattle.spriteBatch.setProjectionMatrix(camera.combined);
 
         this.playerGameBounds = new Rectangle(-240, -520, 480, 1040);
@@ -58,10 +59,26 @@ public class GameScreen extends AbstractScreen {
     public void render(float delta) {
 
         TetriBattle.spriteBatch.setProjectionMatrix(camera.combined);
+        TetriBattle.shapeRenderer.setProjectionMatrix(camera.combined);
 
         // TODO implement fixed time step for game loop.
 
+        drawBackground(delta);
+
         playerGameInstance.update(delta);
+    }
+
+    private void drawBackground(float delta) {
+
+        TetriBattle.shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        TetriBattle.shapeRenderer.setColor(TetriBattle.assets.backgroundColor);
+        TetriBattle.shapeRenderer.rect(-TetriBattle.WORLD_WIDTH_PIXEL / 2,
+                                       -TetriBattle.WORLD_HEIGHT_PIXEL / 2,
+                                       TetriBattle.WORLD_WIDTH_PIXEL,
+                                       TetriBattle.WORLD_HEIGHT_PIXEL);
+
+        TetriBattle.shapeRenderer.end();
+
     }
 
     @Override

@@ -6,6 +6,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.TextureAtlasLoader;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.ResolutionFileResolver;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
@@ -25,6 +26,9 @@ public class Assets {
     public TextureRegion tileYellowBreakerTextureRegion;
 
     public NinePatch glassBackgroundNinePatch;
+    public NinePatch metalBackgroundNinePatch;
+
+    public Color backgroundColor = Color.valueOf("3F7CB6");
 
     private AssetManager assetManager;
 
@@ -34,17 +38,17 @@ public class Assets {
         TetriBattle.analytics.logEvent("ASSETS_NEW_INSTANCE", true);
 
         ResolutionFileResolver.Resolution _240x320 = new ResolutionFileResolver.Resolution(240, 320,
-                "240x320");
+                                                                                           "240x320");
         ResolutionFileResolver.Resolution _320x480 = new ResolutionFileResolver.Resolution(320, 480,
-                "320x480");
+                                                                                           "320x480");
         ResolutionFileResolver.Resolution _480x800 = new ResolutionFileResolver.Resolution(480, 800,
-                "480x800");
+                                                                                           "480x800");
         ResolutionFileResolver.Resolution _720x1280 = new ResolutionFileResolver.Resolution(720,
-                1280,
-                "720x1280");
+                                                                                            1280,
+                                                                                            "720x1280");
         ResolutionFileResolver.Resolution _1080x1920 = new ResolutionFileResolver.Resolution(1080,
-                1920,
-                "1080x1920");
+                                                                                             1920,
+                                                                                             "1080x1920");
 
         ResolutionFileResolver resolver = new ResolutionFileResolver(
                 new InternalFileHandleResolver(), _240x320, _320x480, _480x800, _720x1280,
@@ -52,7 +56,7 @@ public class Assets {
 
         this.assetManager = new AssetManager();
         this.assetManager.setLoader(TextureAtlas.class, new TextureAtlasLoader(resolver));
-
+        
         TetriBattle.analytics.endTimedEvent("ASSETS_NEW_INSTANCE");
     }
 
@@ -102,6 +106,7 @@ public class Assets {
         tileYellowBreakerTextureRegion = textureAtlas.findRegion("tileYellowBreaker");
 
         glassBackgroundNinePatch = textureAtlas.createPatch("glass_background");
+        metalBackgroundNinePatch = textureAtlas.createPatch("metal_background");
 
         TetriBattle.analytics.endTimedEvent("ASSETS_GET");
     }
