@@ -4,6 +4,15 @@ size: 512,512
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
+glass_background
+  rotate: false
+  xy: 304, 82
+  size: 100, 100
+  split: 47, 45, 48, 43
+  pad: 4, 4, 4, 4
+  orig: 100, 100
+  offset: 0, 0
+  index: -1
 tileBlue
   rotate: false
   xy: 2, 152

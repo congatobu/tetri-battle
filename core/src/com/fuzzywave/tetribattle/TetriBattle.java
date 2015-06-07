@@ -15,6 +15,8 @@ public class TetriBattle implements ApplicationListener {
     public static final float WORLD_WIDTH_PIXEL = 720;
     public static final float WORLD_HEIGHT_PIXEL = 1280;
 
+    public static final float BOARD_FRAME_PADDING = 4;
+
     public static final float WORLD_WIDTH = 9;
     public static final float WORLD_HEIGHT = 16;
 

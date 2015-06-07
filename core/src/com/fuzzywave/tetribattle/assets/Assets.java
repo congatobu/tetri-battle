@@ -8,6 +8,7 @@ import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.assets.loaders.resolvers.ResolutionFileResolver;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.fuzzywave.tetribattle.TetriBattle;
@@ -22,6 +23,9 @@ public class Assets {
     public TextureRegion tileGreenBreakerTextureRegion;
     public TextureRegion tileRedBreakerTextureRegion;
     public TextureRegion tileYellowBreakerTextureRegion;
+
+    public NinePatch glassBackgroundNinePatch;
+
     private AssetManager assetManager;
 
     public Assets() {
@@ -97,13 +101,15 @@ public class Assets {
         tileRedBreakerTextureRegion = textureAtlas.findRegion("tileRedBreaker");
         tileYellowBreakerTextureRegion = textureAtlas.findRegion("tileYellowBreaker");
 
+        glassBackgroundNinePatch = textureAtlas.createPatch("glass_background");
+
         TetriBattle.analytics.endTimedEvent("ASSETS_GET");
     }
 
     public void unloadAssets() {
         TetriBattle.analytics.logEvent("ASSETS_UNLOAD", true);
 
-        assetManager.unload("game.atlas");
+        assetManager.unload("game/game.atlas");
 
         TetriBattle.analytics.endTimedEvent("ASSETS_UNLOAD");
     }

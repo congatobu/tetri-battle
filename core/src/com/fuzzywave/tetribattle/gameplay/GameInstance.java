@@ -58,9 +58,23 @@ public class GameInstance {
     public void update(float delta) {
         stateMachine.update(delta);
 
+
+        drawBackground(delta);
+
         drawBoard(delta);
 
         drawPiece(delta);
+    }
+
+    private void drawBackground(float delta) {
+        TetriBattle.spriteBatch.begin();
+
+        TetriBattle.assets.glassBackgroundNinePatch.draw(TetriBattle.spriteBatch,
+                                                         drawingRectangle.x - TetriBattle.BOARD_FRAME_PADDING,
+                                                         drawingRectangle.y - TetriBattle.BOARD_FRAME_PADDING,
+                                                         drawingRectangle.width + TetriBattle.BOARD_FRAME_PADDING * 2,
+                                                         drawingRectangle.height + TetriBattle.BOARD_FRAME_PADDING * 2);
+        TetriBattle.spriteBatch.end();
     }
 
     private void drawPiece(float delta) {
@@ -98,7 +112,8 @@ public class GameInstance {
         float xPixel = this.drawingRectangle.x + (x * blockToPixelWidth);// + (blockToPixelWidth / 2);
         float yPixel = this.drawingRectangle.y + (y * blockToPixelHeight);// + (blockToPixelHeight / 2);
 
-        TetriBattle.spriteBatch.draw(textureRegion, xPixel, yPixel, blockToPixelWidth, blockToPixelHeight);
+        TetriBattle.spriteBatch.draw(textureRegion, xPixel, yPixel, blockToPixelWidth,
+                                     blockToPixelHeight);
     }
 
     public Block getBlock(int x, int y) {
@@ -126,13 +141,18 @@ public class GameInstance {
      * @return true, if there is a collision.
      */
     public boolean isColliding(Piece currentPiece, int horizontalMovement, int verticalMovement) {
-        return isColliding(currentPiece.getFirstBlockPosition(), currentPiece.getSecondBlockPosition(), horizontalMovement, verticalMovement);
+        return isColliding(currentPiece.getFirstBlockPosition(),
+                           currentPiece.getSecondBlockPosition(), horizontalMovement,
+                           verticalMovement);
     }
 
 
-    public boolean isColliding(IntArray firstPos, IntArray secondPos, int horizontalMovement, int verticalMovement) {
-        return isColliding(firstPos.get(0) + horizontalMovement, firstPos.get(1) + verticalMovement) ||
-                isColliding(secondPos.get(0) + horizontalMovement, secondPos.get(1) + verticalMovement);
+    public boolean isColliding(IntArray firstPos, IntArray secondPos, int horizontalMovement,
+                               int verticalMovement) {
+        return isColliding(firstPos.get(0) + horizontalMovement,
+                           firstPos.get(1) + verticalMovement) ||
+                isColliding(secondPos.get(0) + horizontalMovement,
+                            secondPos.get(1) + verticalMovement);
     }
 
     /**
