@@ -19,7 +19,6 @@ public class Piece {
     private IntArray tempSecondBlockPosition;
 
     private int rotation = 0;
-    private float nextDropTime;
     private boolean movementDone;
     private boolean fastDrop;
 
@@ -47,14 +46,6 @@ public class Piece {
         return secondBlock;
     }
 
-    public float getNextDropTime() {
-        return this.nextDropTime;
-    }
-
-    public void setNextDropTime(float nextDropTime) {
-        this.nextDropTime = nextDropTime;
-    }
-
     public void initialize(BlockType firstBlockType, BlockType secondBlockType) {
         this.firstBlock.setBlockType(firstBlockType);
         this.secondBlock.setBlockType(secondBlockType);
@@ -68,7 +59,6 @@ public class Piece {
         this.secondBlockPosition.set(0, TetriBattle.BLOCK_SPAWN_X); // x
         this.secondBlockPosition.set(1, TetriBattle.BLOCK_SPAWN_Y + 2); // y
 
-        this.nextDropTime = TetriBattle.PIECE_DROP_TIMEOUT;
         this.movementDone = false;
         this.fastDrop = false;
     }
