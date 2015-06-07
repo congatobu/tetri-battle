@@ -4,6 +4,7 @@ package com.fuzzywave.tetribattle.screen;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.input.GestureDetector;
@@ -58,6 +59,12 @@ public class GameScreen extends AbstractScreen {
     @Override
     public void render(float delta) {
 
+        Gdx.gl.glClearColor(TetriBattle.assets.backgroundColor.r,
+                            TetriBattle.assets.backgroundColor.g,
+                            TetriBattle.assets.backgroundColor.b,
+                            TetriBattle.assets.backgroundColor.a);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
         TetriBattle.spriteBatch.setProjectionMatrix(camera.combined);
         TetriBattle.shapeRenderer.setProjectionMatrix(camera.combined);
 
@@ -71,6 +78,7 @@ public class GameScreen extends AbstractScreen {
     private void drawBackground(float delta) {
 
         TetriBattle.shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+
         TetriBattle.shapeRenderer.setColor(TetriBattle.assets.backgroundColor);
         TetriBattle.shapeRenderer.rect(-TetriBattle.WORLD_WIDTH_PIXEL / 2,
                                        -TetriBattle.WORLD_HEIGHT_PIXEL / 2,

@@ -56,7 +56,7 @@ public class Assets {
 
         this.assetManager = new AssetManager();
         this.assetManager.setLoader(TextureAtlas.class, new TextureAtlasLoader(resolver));
-        
+
         TetriBattle.analytics.endTimedEvent("ASSETS_NEW_INSTANCE");
     }
 
