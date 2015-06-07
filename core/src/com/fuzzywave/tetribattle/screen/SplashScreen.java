@@ -78,7 +78,7 @@ public class SplashScreen extends AbstractScreen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        // bunu neden her render call'inda yapiyoruz yaw?
+        // FIXME bunu neden her render call'inda yapiyoruz yaw?
         TetriBattle.spriteBatch.setProjectionMatrix(camera.combined);
         TetriBattle.shapeRenderer.setProjectionMatrix(camera.combined);
 

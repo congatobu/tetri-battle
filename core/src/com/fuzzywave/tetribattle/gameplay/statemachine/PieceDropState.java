@@ -31,9 +31,8 @@ public class PieceDropState implements State {
         checkUserInput(gameInstance);
 
         if (currentPiece.isMovementDone()) {
-            // TODO switch to automatic drop state.
             StateMachine stateMachine = gameInstance.getStateMachine();
-            stateMachine.changeState(stateMachine.pieceDropState);
+            stateMachine.changeState(stateMachine.dropState);
         }
     }
 

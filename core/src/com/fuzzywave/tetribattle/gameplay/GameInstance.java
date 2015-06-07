@@ -20,11 +20,12 @@ public class GameInstance {
     private float blockToPixelWidth;
     private float blockToPixelHeight;
 
-
     private boolean moveLeft;
     private boolean moveRight;
     private boolean fastDrop;
     private boolean rotate;
+
+    private float nextDropTime;
 
     public GameInstance(Rectangle drawingRectangle) {
 
@@ -231,4 +232,11 @@ public class GameInstance {
     }
 
 
+    public float getNextDropTime() {
+        return nextDropTime;
+    }
+
+    public void setNextDropTime(float nextDropTime) {
+        this.nextDropTime = nextDropTime;
+    }
 }
