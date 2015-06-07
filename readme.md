@@ -17,7 +17,7 @@ flurryapikey=0123456789ABCDEF
 Please see the file called [CHANGELOG](changelog.md).
 
 ## Licensing
-TODO license.
+Copyright (c) 2015 Yigiter Yigit, released under [the MIT license](LICENSE).
 
 ## Some useful links:
 1. [Libgdx Versions](http://libgdx.badlogicgames.com/versions.html)
