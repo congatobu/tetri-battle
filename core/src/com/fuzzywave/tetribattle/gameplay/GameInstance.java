@@ -1,5 +1,6 @@
 package com.fuzzywave.tetribattle.gameplay;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
@@ -7,9 +8,13 @@ import com.badlogic.gdx.utils.IntArray;
 import com.fuzzywave.tetribattle.TetriBattle;
 import com.fuzzywave.tetribattle.gameplay.statemachine.StateMachine;
 
+import java.util.Arrays;
 import java.util.Random;
 
 public class GameInstance {
+
+    private final Color batchColor;
+    private final Color batchAlphaColor;
 
     private StateMachine stateMachine;
     private Array<Block> blocks;
@@ -26,6 +31,9 @@ public class GameInstance {
     private boolean rotate;
 
     private float nextDropTime;
+    private float destructionInterpolation;
+    private int[] blocksVisitor;
+    private boolean destructionMarker;
 
     public GameInstance(Rectangle drawingRectangle) {
 
@@ -39,6 +47,8 @@ public class GameInstance {
         for (int i = 0; i < TetriBattle.BLOCKS_WIDTH * TetriBattle.BLOCKS_HEIGHT; i++) {
             blocks.add(new Block(BlockType.EMPTY));
         }
+
+        blocksVisitor = new int[TetriBattle.BLOCKS_WIDTH * TetriBattle.BLOCKS_HEIGHT];
 
         currentPiece = new Piece();
 
@@ -54,6 +64,9 @@ public class GameInstance {
             }
         }
         */
+
+        batchColor = TetriBattle.spriteBatch.getColor().cpy();
+        batchAlphaColor = new Color(batchColor.r, batchColor.g, batchColor.b, 0); // full alpha.
     }
 
     public void update(float delta) {
@@ -112,8 +125,20 @@ public class GameInstance {
         float xPixel = this.drawingRectangle.x + (x * blockToPixelWidth);// + (blockToPixelWidth / 2);
         float yPixel = this.drawingRectangle.y + (y * blockToPixelHeight);// + (blockToPixelHeight / 2);
 
-        TetriBattle.spriteBatch.draw(textureRegion, xPixel, yPixel, blockToPixelWidth,
-                                     blockToPixelHeight);
+        if (this.destructionMarker && getBlocksVisitor(x, y) == 2) {
+            TetriBattle.spriteBatch.setColor(
+                    TetriBattle.spriteBatch.getColor().lerp(batchAlphaColor,
+                                                            this.destructionInterpolation));
+
+            TetriBattle.spriteBatch.draw(textureRegion, xPixel, yPixel, blockToPixelWidth,
+                                         blockToPixelHeight);
+
+            TetriBattle.spriteBatch.setColor(batchColor);
+        } else {
+
+            TetriBattle.spriteBatch.draw(textureRegion, xPixel, yPixel, blockToPixelWidth,
+                                         blockToPixelHeight);
+        }
     }
 
     public Block getBlock(int x, int y) {
@@ -238,5 +263,29 @@ public class GameInstance {
 
     public void setNextDropTime(float nextDropTime) {
         this.nextDropTime = nextDropTime;
+    }
+
+    public void setDestructionInterpolation(float destructionInterpolation) {
+        this.destructionInterpolation = destructionInterpolation;
+    }
+
+    public int getBlocksVisitor(int x, int y) {
+        return blocksVisitor[x + y * TetriBattle.BLOCKS_WIDTH];
+    }
+
+    public void setBlockVisitor(int x, int y, int value) {
+        blocksVisitor[x + y * TetriBattle.BLOCKS_WIDTH] = value;
+    }
+
+    public void clearBlockVisitor() {
+        Arrays.fill(blocksVisitor, 0);
+    }
+
+    public void setDestructionMarker(boolean destructionMarker) {
+        this.destructionMarker = destructionMarker;
+    }
+
+    public boolean getDestructionMarker() {
+        return destructionMarker;
     }
 }

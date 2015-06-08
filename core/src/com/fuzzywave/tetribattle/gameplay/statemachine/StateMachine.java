@@ -8,14 +8,16 @@ public class StateMachine {
     private State currentState;
 
     public State pieceDropState;
-    public State dropState;
+    public State blockDropState;
+    public State destructionState;
 
     public StateMachine(GameInstance gameInstance) {
 
         this.gameInstance = gameInstance;
 
         this.pieceDropState = new PieceDropState();
-        this.dropState = new DropState();
+        this.blockDropState = new BlockDropState();
+        this.destructionState = new DestructionState();
     }
 
     public void update(float delta) {

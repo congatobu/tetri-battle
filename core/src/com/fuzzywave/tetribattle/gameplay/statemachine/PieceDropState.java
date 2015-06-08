@@ -34,7 +34,7 @@ public class PieceDropState implements State {
 
         if (currentPiece.isMovementDone()) {
             StateMachine stateMachine = gameInstance.getStateMachine();
-            stateMachine.changeState(stateMachine.dropState);
+            stateMachine.changeState(stateMachine.blockDropState);
         }
     }
 

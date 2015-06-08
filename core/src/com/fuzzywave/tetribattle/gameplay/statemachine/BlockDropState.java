@@ -9,7 +9,7 @@ import com.fuzzywave.tetribattle.gameplay.GameInstance;
 /**
  * Fills the empty spaces in the game board by dropping the Blocks above.
  */
-public class DropState implements State{
+public class BlockDropState implements State{
 
 
     @Override
@@ -28,7 +28,7 @@ public class DropState implements State{
 
             if(!blocksMoved){
                 StateMachine stateMachine = gameInstance.getStateMachine();
-                stateMachine.changeState(stateMachine.pieceDropState);
+                stateMachine.changeState(stateMachine.destructionState);
             }
         }
     }

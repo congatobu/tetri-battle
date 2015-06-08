@@ -30,6 +30,7 @@ public class TetriBattle implements ApplicationListener {
     public static final float PIECE_DROP_TIMEOUT = 1f;
     public static final float PIECE_FAST_DROP_TIMEOUT = 0.1f;
     public static final float BLOCK_FAST_DROP_TIMEOUT = 0.1f;
+    public static final float DESTRUCTION_TIMEOUT = 0.7f;
 
     // create a new game and set the initial screen
     public static Game game = new Game() {

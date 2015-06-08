@@ -86,7 +86,6 @@ public class GameScreen extends AbstractScreen {
                                        TetriBattle.WORLD_HEIGHT_PIXEL);
 
         TetriBattle.shapeRenderer.end();
-
     }
 
     @Override

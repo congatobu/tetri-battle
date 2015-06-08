@@ -7,20 +7,25 @@ import com.fuzzywave.tetribattle.TetriBattle;
 import java.util.Random;
 
 public enum BlockType {
-    BLUE(TetriBattle.BLOCK_SPAWN_PROBABILITY),
-    GREEN(TetriBattle.BLOCK_SPAWN_PROBABILITY),
-    RED(TetriBattle.BLOCK_SPAWN_PROBABILITY),
-    YELLOW(TetriBattle.BLOCK_SPAWN_PROBABILITY),
-    BLUE_BREAKER(TetriBattle.BREAKER_SPAWN_PROBABILITY),
-    GREEN_BREAKER(TetriBattle.BREAKER_SPAWN_PROBABILITY),
-    RED_BREAKER(TetriBattle.BREAKER_SPAWN_PROBABILITY),
-    YELLOW_BREAKER(TetriBattle.BREAKER_SPAWN_PROBABILITY),
-    EMPTY(0f);
+    BLUE(0, TetriBattle.BLOCK_SPAWN_PROBABILITY, false),
+    GREEN(1, TetriBattle.BLOCK_SPAWN_PROBABILITY, false),
+    RED(2, TetriBattle.BLOCK_SPAWN_PROBABILITY, false),
+    YELLOW(3, TetriBattle.BLOCK_SPAWN_PROBABILITY, false),
+    BLUE_BREAKER(0, TetriBattle.BREAKER_SPAWN_PROBABILITY, true),
+    GREEN_BREAKER(1, TetriBattle.BREAKER_SPAWN_PROBABILITY, true),
+    RED_BREAKER(2, TetriBattle.BREAKER_SPAWN_PROBABILITY, true),
+    YELLOW_BREAKER(3, TetriBattle.BREAKER_SPAWN_PROBABILITY, true),
+    EMPTY(-1, 0f, false);
 
+    public int color;
     public float probability;
+    public boolean isBreaker;
 
-    BlockType(float probability) {
+
+    BlockType(int color, float probability, boolean isBreaker) {
+        this.color = color;
         this.probability = probability;
+        this.isBreaker = isBreaker;
     }
 
     public TextureRegion getTextureRegion() {
