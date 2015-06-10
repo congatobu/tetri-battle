@@ -35,6 +35,8 @@ public class GameInstance {
     private int[] blocksVisitor;
     private boolean destructionMarker;
 
+    // TODO G E M s
+
     public GameInstance(Rectangle drawingRectangle) {
 
         this.drawingRectangle = drawingRectangle;
