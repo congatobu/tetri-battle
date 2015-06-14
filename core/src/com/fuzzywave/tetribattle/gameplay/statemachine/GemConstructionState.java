@@ -37,18 +37,22 @@ public class GemConstructionState implements State {
 
     @Override
     public void enter(GameInstance gameInstance) {
+        TetriBattle.logger.debug("ENTER: GemConstructionState");
+
         constructGems(gameInstance, BlockType.BLUE);
+        constructGems(gameInstance, BlockType.GREEN);
+        constructGems(gameInstance, BlockType.RED);
+        constructGems(gameInstance, BlockType.YELLOW);
     }
 
-    private void constructGems(GameInstance gameInstance, BlockType blockType) {
+    public void constructGems(GameInstance gameInstance, BlockType blockType) {
         initializeHeights(gameInstance, blockType);
 
         boolean continueWhile = true;
         while (continueWhile) {
             initializeWidths();
-            boolean hasRectangle = setMaxRectangle();
+            boolean hasRectangle = setMaxRectangleAsGem(gameInstance);
             if (hasRectangle) {
-                attachGem(maxRectangle);
                 updateHeights();
                 continueWhile = true;
             } else {
@@ -137,11 +141,9 @@ public class GemConstructionState implements State {
         }
     }
 
-    private boolean setMaxRectangle() {
-
+    private boolean setMaxRectangleAsGem(GameInstance gameInstance) {
 
         maxRectangle.set(-1, -1, -1, -1);
-        int max = 0;
         boolean hasRectangle = false;
 
         for (int i = 0; i < TetriBattle.BLOCKS_WIDTH; i++) {
@@ -151,9 +153,9 @@ public class GemConstructionState implements State {
 
                 int w = widths[index];
                 int h = heights[index];
-                if(w >= 2 && h >= 2){
+                if (w >= 2 && h >= 2) {
                     area[index] = w * h;
-                }else{
+                } else {
                     area[index] = 0;
                 }
 
@@ -165,23 +167,22 @@ public class GemConstructionState implements State {
 
         boolean continueSearch = true;
         int i = 0;
-        while(continueSearch){
+        while (continueSearch) {
             int index = areaIndices[i];
-            if(area[index] > 4){
+            if (area[index] >= 4) {
                 int width = widths[index];
                 int height = heights[index];
                 int x = cornerPointX[index];
                 int y = cornerPointY[index];
 
-                // TODO check gameInstance for existing GEMs.
-                if(true) {
+                if (gameInstance.tryToCreateGem(x, y, width, height)) {
                     hasRectangle = true;
                     maxRectangle.set(x, y, width, height);
                     continueSearch = false;
-                }else{
-                    ++i;
+                } else {
+                    i++;
                 }
-            }else{
+            } else {
                 continueSearch = false;
             }
         }
@@ -193,10 +194,14 @@ public class GemConstructionState implements State {
     @Override
     public void update(GameInstance gameInstance, float delta) {
 
+        // TODO state zamanlamalari.
+
+        StateMachine stateMachine = gameInstance.getStateMachine();
+        stateMachine.changeState(stateMachine.destructionState);
     }
 
     @Override
     public void exit(GameInstance gameInstance) {
-
+        TetriBattle.logger.debug("EXIT: GemConstructionState");
     }
 }

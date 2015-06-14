@@ -121,20 +121,8 @@ public class DestructionState implements State {
 
     @Override
     public void exit(GameInstance gameInstance) {
-        if (gameInstance.getDestructionMarker()) {
-            destroyBlocks(gameInstance);
-            gameInstance.setDestructionMarker(false);
-        }
+        gameInstance.destroyBlocks();
     }
 
-    private void destroyBlocks(GameInstance gameInstance) {
-        for (int x = 0; x < TetriBattle.BLOCKS_WIDTH; x++) {
-            for (int y = 0; y < TetriBattle.BLOCKS_HEIGHT; y++) {
-                if (gameInstance.getBlocksVisitor(x, y) == 2) {
-                    Block block = gameInstance.getBlock(x, y);
-                    block.setBlockType(BlockType.EMPTY);
-                }
-            }
-        }
-    }
+
 }

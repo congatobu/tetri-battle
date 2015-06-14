@@ -10,7 +10,7 @@ public class Quicksort {
     }
 
     // quicksort a[left] to a[right]
-    public static void quicksort(int[] a, int[] index, int left, int right) {
+    private static void quicksort(int[] a, int[] index, int left, int right) {
         if (right <= left) {
             return;
         }

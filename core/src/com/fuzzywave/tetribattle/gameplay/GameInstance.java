@@ -13,8 +13,7 @@ import java.util.Random;
 
 public class GameInstance {
 
-    private final Color batchColor;
-    private final Color batchAlphaColor;
+
 
     private StateMachine stateMachine;
     private Array<Block> blocks;
@@ -36,6 +35,7 @@ public class GameInstance {
     private boolean destructionMarker;
 
     // TODO G E M s
+    private GemPool gemPool;
 
     public GameInstance(Rectangle drawingRectangle) {
 
@@ -50,6 +50,8 @@ public class GameInstance {
             blocks.add(new Block(BlockType.EMPTY));
         }
 
+        gemPool = new GemPool();
+
         blocksVisitor = new int[TetriBattle.BLOCKS_WIDTH * TetriBattle.BLOCKS_HEIGHT];
 
         currentPiece = new Piece();
@@ -57,18 +59,8 @@ public class GameInstance {
         stateMachine = new StateMachine(this);
 
         stateMachine.changeState(stateMachine.pieceDropState);
-        // XXX butun board'i blocklarla doldurma denemesi
-        /*
-        for(int x = 0; x < TetriBattle.BLOCKS_WIDTH; x++) {
-            for (int y = 0; y < TetriBattle.BLOCKS_HEIGHT; y++) {
-                Block block = getBlock(x, y);
-                block.setBlockType(BlockType.getRandomBlockType(this.random));
-            }
-        }
-        */
 
-        batchColor = TetriBattle.spriteBatch.getColor().cpy();
-        batchAlphaColor = new Color(batchColor.r, batchColor.g, batchColor.b, 0); // full alpha.
+
     }
 
     public void update(float delta) {
@@ -129,13 +121,13 @@ public class GameInstance {
 
         if (this.destructionMarker && getBlocksVisitor(x, y) == 2) {
             TetriBattle.spriteBatch.setColor(
-                    TetriBattle.spriteBatch.getColor().lerp(batchAlphaColor,
+                    TetriBattle.spriteBatch.getColor().lerp(TetriBattle.batchAlphaColor,
                                                             this.destructionInterpolation));
 
             TetriBattle.spriteBatch.draw(textureRegion, xPixel, yPixel, blockToPixelWidth,
                                          blockToPixelHeight);
 
-            TetriBattle.spriteBatch.setColor(batchColor);
+            TetriBattle.spriteBatch.setColor(TetriBattle.batchColor);
         } else {
 
             TetriBattle.spriteBatch.draw(textureRegion, xPixel, yPixel, blockToPixelWidth,
@@ -289,5 +281,61 @@ public class GameInstance {
 
     public boolean getDestructionMarker() {
         return destructionMarker;
+    }
+
+    public boolean tryToCreateGem(int x, int y, int width, int height) {
+        int gemId = gemPool.tryToCreateGem(x, y, width, height);
+        if (gemId != -1) {
+            for (int i = 0; i < width; i++) {
+                for (int j = 0; j < height; j++) {
+                    Block block = getBlock(x + i, y + j);
+                    block.setGemId(gemId);
+
+
+                }
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public void destroyBlocks() {
+        if (destructionMarker) {
+            for (int x = 0; x < TetriBattle.BLOCKS_WIDTH; x++) {
+                for (int y = 0; y < TetriBattle.BLOCKS_HEIGHT; y++) {
+                    if (getBlocksVisitor(x, y) == 2) {
+                        Block block = getBlock(x, y);
+                        int gemId = block.getGemId();
+                        if (gemId != -1) {
+                            // TODO gem destuction counter.
+                            gemPool.setDestructionMarker(gemId);
+                        }
+                        block.setBlockType(BlockType.EMPTY);
+                        block.setGemId(-1);
+                    }
+                }
+            }
+
+            gemPool.destroyGems();
+
+            this.destructionMarker = false;
+        }
+    }
+
+
+    public void clear() {
+        for (int x = 0; x < TetriBattle.BLOCKS_WIDTH; x++) {
+            for (int y = 0; y < TetriBattle.BLOCKS_HEIGHT; y++) {
+
+                Block block = getBlock(x, y);
+                block.setBlockType(BlockType.EMPTY);
+
+                gemPool.setDestructionMarker((block.getGemId() != -1 ? block.getGemId() : 0));
+                block.setGemId(-1);
+            }
+        }
+
+        gemPool.destroyGems();
     }
 }

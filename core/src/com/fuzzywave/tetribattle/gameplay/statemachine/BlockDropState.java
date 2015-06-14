@@ -28,7 +28,7 @@ public class BlockDropState implements State{
 
             if(!blocksMoved){
                 StateMachine stateMachine = gameInstance.getStateMachine();
-                stateMachine.changeState(stateMachine.destructionState);
+                stateMachine.changeState(stateMachine.gemConstructionState);
             }
         }
     }

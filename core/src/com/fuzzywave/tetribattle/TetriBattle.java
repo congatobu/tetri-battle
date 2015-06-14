@@ -3,7 +3,7 @@ package com.fuzzywave.tetribattle;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Logger;
@@ -42,6 +42,9 @@ public class TetriBattle implements ApplicationListener {
 
     public static SpriteBatch spriteBatch;
 
+    public static Color batchColor;
+    public static Color batchAlphaColor;
+
     public static ShapeRenderer shapeRenderer;
 
     public static IAnalytics analytics;
@@ -63,6 +66,8 @@ public class TetriBattle implements ApplicationListener {
             analytics.init();
 
             spriteBatch = new SpriteBatch();
+            batchColor = TetriBattle.spriteBatch.getColor().cpy();
+            batchAlphaColor = new Color(batchColor.r, batchColor.g, batchColor.b, 0); // full alpha.
 
             shapeRenderer = new ShapeRenderer();
 
