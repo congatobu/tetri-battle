@@ -28,8 +28,8 @@ public class Util {
         float ymin = y2;
         float ymax = ymin + height2;
 
-        return ((xmin > x1 && xmin < x1 + width1) && (xmax > x1 && xmax < x1 + width1))
-                && ((ymin > y1 && ymin < y1 + height1) && (ymax > y1 && ymax < y1 + height1));
+        return ((xmin >= x1 && xmin <= x1 + width1) && (xmax >= x1 && xmax <= x1 + width1))
+                && ((ymin >= y1 && ymin <= y1 + height1) && (ymax >= y1 && ymax <= y1 + height1));
     }
 
 
