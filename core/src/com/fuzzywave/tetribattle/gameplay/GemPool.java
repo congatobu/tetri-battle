@@ -93,4 +93,8 @@ public class GemPool {
     public void setDestructionMarker(int gemId) {
         gemList.get(gemId).setDestructionMarker(true);
     }
+
+    public Gem getGem(int gemId) {
+        return gemList.get(gemId);
+    }
 }

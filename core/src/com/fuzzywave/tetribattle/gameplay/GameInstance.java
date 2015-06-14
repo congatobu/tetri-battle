@@ -338,4 +338,8 @@ public class GameInstance {
 
         gemPool.destroyGems();
     }
+
+    public Gem getGem(int gemId) {
+        return gemPool.getGem(gemId);
+    }
 }
