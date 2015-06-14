@@ -28,28 +28,51 @@ public enum BlockType {
         this.isBreaker = isBreaker;
     }
 
-    public TextureRegion getTextureRegion() {
+    public TextureRegion getTextureRegion(boolean isGem) {
 
-        switch (this) {
-            case BLUE:
-                return TetriBattle.assets.tileBlueTextureRegion;
-            case GREEN:
-                return TetriBattle.assets.tileGreenTextureRegion;
-            case RED:
-                return TetriBattle.assets.tileRedTextureRegion;
-            case YELLOW:
-                return TetriBattle.assets.tileYellowTextureRegion;
-            case BLUE_BREAKER:
-                return TetriBattle.assets.tileBlueBreakerTextureRegion;
-            case GREEN_BREAKER:
-                return TetriBattle.assets.tileGreenBreakerTextureRegion;
-            case RED_BREAKER:
-                return TetriBattle.assets.tileRedBreakerTextureRegion;
-            case YELLOW_BREAKER:
-                return TetriBattle.assets.tileYellowBreakerTextureRegion;
-            case EMPTY:
-                throw new RuntimeException("There is no texture for empty blocks!");
+        if (isGem) {
 
+            switch (this) {
+                case BLUE:
+                    return TetriBattle.assets.tileBlueGemTextureRegion;
+                case GREEN:
+                    return TetriBattle.assets.tileGreenGemTextureRegion;
+                case RED:
+                    return TetriBattle.assets.tileRedGemTextureRegion;
+                case YELLOW:
+                    return TetriBattle.assets.tileYellowGemTextureRegion;
+                case BLUE_BREAKER:
+                    throw new RuntimeException("There is no texture for breaker gems blocks!");
+                case GREEN_BREAKER:
+                    throw new RuntimeException("There is no texture for breaker gems blocks!");
+                case RED_BREAKER:
+                    throw new RuntimeException("There is no texture for breaker gems blocks!");
+                case YELLOW_BREAKER:
+                    throw new RuntimeException("There is no texture for breaker gems blocks!");
+                case EMPTY:
+                    throw new RuntimeException("There is no texture for empty blocks!");
+            }
+        } else {
+            switch (this) {
+                case BLUE:
+                    return TetriBattle.assets.tileBlueTextureRegion;
+                case GREEN:
+                    return TetriBattle.assets.tileGreenTextureRegion;
+                case RED:
+                    return TetriBattle.assets.tileRedTextureRegion;
+                case YELLOW:
+                    return TetriBattle.assets.tileYellowTextureRegion;
+                case BLUE_BREAKER:
+                    return TetriBattle.assets.tileBlueBreakerTextureRegion;
+                case GREEN_BREAKER:
+                    return TetriBattle.assets.tileGreenBreakerTextureRegion;
+                case RED_BREAKER:
+                    return TetriBattle.assets.tileRedBreakerTextureRegion;
+                case YELLOW_BREAKER:
+                    return TetriBattle.assets.tileYellowBreakerTextureRegion;
+                case EMPTY:
+                    throw new RuntimeException("There is no texture for empty blocks!");
+            }
         }
         return null;
     }

@@ -1,6 +1,5 @@
 package com.fuzzywave.tetribattle.gameplay;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
@@ -12,7 +11,6 @@ import java.util.Arrays;
 import java.util.Random;
 
 public class GameInstance {
-
 
 
     private StateMachine stateMachine;
@@ -115,7 +113,7 @@ public class GameInstance {
     }
 
     private void drawBlock(Block block, int x, int y) {
-        TextureRegion textureRegion = block.getBlockType().getTextureRegion();
+        TextureRegion textureRegion = block.getBlockType().getTextureRegion(block.getGemId() != -1);
         float xPixel = this.drawingRectangle.x + (x * blockToPixelWidth);// + (blockToPixelWidth / 2);
         float yPixel = this.drawingRectangle.y + (y * blockToPixelHeight);// + (blockToPixelHeight / 2);
 

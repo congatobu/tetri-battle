@@ -20,6 +20,12 @@ public class Assets {
     public TextureRegion tileGreenTextureRegion;
     public TextureRegion tileRedTextureRegion;
     public TextureRegion tileYellowTextureRegion;
+
+    public TextureRegion tileBlueGemTextureRegion;
+    public TextureRegion tileGreenGemTextureRegion;
+    public TextureRegion tileRedGemTextureRegion;
+    public TextureRegion tileYellowGemTextureRegion;
+
     public TextureRegion tileBlueBreakerTextureRegion;
     public TextureRegion tileGreenBreakerTextureRegion;
     public TextureRegion tileRedBreakerTextureRegion;
