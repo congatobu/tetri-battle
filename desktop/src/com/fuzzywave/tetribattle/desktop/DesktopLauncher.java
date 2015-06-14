@@ -13,6 +13,7 @@ public class DesktopLauncher {
         boolean runTexturePacker = true;
         if (runTexturePacker) {
 
+            /*
             DesktopUtils.packTexture("/home/default/workspace/tetri-battle/assets/game/ldpi/",
                                      "/home/default/workspace/tetri-battle/android/assets/game/240x320",
                                      "game");
@@ -27,6 +28,11 @@ public class DesktopLauncher {
                                      "game");
             DesktopUtils.packTexture("/home/default/workspace/tetri-battle/assets/game/xxhdpi/",
                                      "/home/default/workspace/tetri-battle/android/assets/game/1080x1920",
+                                     "game");
+            */
+
+            DesktopUtils.packTexture("/home/default/workspace/tetri-battle/assets/game/",
+                                     "/home/default/workspace/tetri-battle/android/assets/game",
                                      "game");
         }
 

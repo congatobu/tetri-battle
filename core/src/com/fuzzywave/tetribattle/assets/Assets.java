@@ -4,8 +4,6 @@ package com.fuzzywave.tetribattle.assets;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.TextureAtlasLoader;
-import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
-import com.badlogic.gdx.assets.loaders.resolvers.ResolutionFileResolver;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -43,6 +41,8 @@ public class Assets {
         TetriBattle.logger.debug("Creating new Assets instance.");
         TetriBattle.analytics.logEvent("ASSETS_NEW_INSTANCE", true);
 
+        /*
+
         ResolutionFileResolver.Resolution _240x320 = new ResolutionFileResolver.Resolution(240, 320,
                                                                                            "240x320");
         ResolutionFileResolver.Resolution _320x480 = new ResolutionFileResolver.Resolution(320, 480,
@@ -60,8 +60,9 @@ public class Assets {
                 new InternalFileHandleResolver(), _240x320, _320x480, _480x800, _720x1280,
                 _1080x1920);
 
+        */
         this.assetManager = new AssetManager();
-        this.assetManager.setLoader(TextureAtlas.class, new TextureAtlasLoader(resolver));
+        //this.assetManager.setLoader(TextureAtlas.class, new TextureAtlasLoader(resolver));
 
         TetriBattle.analytics.endTimedEvent("ASSETS_NEW_INSTANCE");
     }
@@ -105,6 +106,11 @@ public class Assets {
         tileGreenTextureRegion = textureAtlas.findRegion("tileGreen");
         tileRedTextureRegion = textureAtlas.findRegion("tileRed");
         tileYellowTextureRegion = textureAtlas.findRegion("tileYellow");
+
+        tileBlueGemTextureRegion = textureAtlas.findRegion("tileBlueGem");
+        tileGreenGemTextureRegion = textureAtlas.findRegion("tileGreenGem");
+        tileRedGemTextureRegion = textureAtlas.findRegion("tileRedGem");
+        tileYellowGemTextureRegion = textureAtlas.findRegion("tileYellowGem");
 
         tileBlueBreakerTextureRegion = textureAtlas.findRegion("tileBlueBreaker");
         tileGreenBreakerTextureRegion = textureAtlas.findRegion("tileGreenBreaker");
