@@ -114,7 +114,7 @@ public class DestructionState implements State {
             }
         } else {
             StateMachine stateMachine = gameInstance.getStateMachine();
-            stateMachine.changeState(stateMachine.pieceDropState);
+            stateMachine.changeState(stateMachine.newPieceState);
         }
 
     }

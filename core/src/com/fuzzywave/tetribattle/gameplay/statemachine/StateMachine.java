@@ -7,6 +7,7 @@ public class StateMachine {
     private GameInstance gameInstance;
     private State currentState;
 
+    public State newPieceState;
     public State pieceDropState;
     public State blockDropState;
     public State destructionState;
@@ -17,6 +18,7 @@ public class StateMachine {
 
         this.gameInstance = gameInstance;
 
+        this.newPieceState = new NewPieceState();
         this.pieceDropState = new PieceDropState();
         this.blockDropState = new BlockDropState();
         this.destructionState = new DestructionState();

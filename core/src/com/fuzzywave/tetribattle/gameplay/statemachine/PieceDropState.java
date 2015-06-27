@@ -12,7 +12,6 @@ public class PieceDropState implements State {
     @Override
     public void enter(GameInstance gameInstance) {
         if (checkGameEnd(gameInstance)) {
-            createRandomPiece(gameInstance);
             gameInstance.setNextDropTime(TetriBattle.PIECE_DROP_TIMEOUT);
 
         } else {
@@ -86,13 +85,7 @@ public class PieceDropState implements State {
         return (block.getBlockType().equals(BlockType.EMPTY));
     }
 
-    private void createRandomPiece(GameInstance gameInstance) {
 
-        BlockType firstBlockType = BlockType.getRandomBlockType(gameInstance.getRandom());
-        BlockType secondBlockType = BlockType.getRandomBlockType(gameInstance.getRandom());
-
-        gameInstance.getCurrentPiece().initialize(firstBlockType, secondBlockType);
-    }
 
     private void dropPiece(GameInstance gameInstance, boolean byUser) {
 
