@@ -201,7 +201,7 @@ public class SplashScreen extends AbstractScreen {
         if (done && (this.splashTimer >= SPLASH_MAX_TIME)) {
             TetriBattle.assets.getAssets();
             TetriBattle.analytics.logEvent("SPLASH_SCREEN_DONE");
-            TetriBattle.game.setScreen(new GameScreen());
+            TetriBattle.game.setScreen(new MenuScreen());
         }
     }
 }
