@@ -16,8 +16,9 @@ public class PieceDropState implements State {
             gameInstance.setNextDropTime(TetriBattle.PIECE_DROP_TIMEOUT);
 
         } else {
-            // TODO game end.
             TetriBattle.analytics.logEvent("GAME_END");
+            StateMachine stateMachine = gameInstance.getStateMachine();
+            stateMachine.changeState(stateMachine.gameEndState);
         }
     }
 

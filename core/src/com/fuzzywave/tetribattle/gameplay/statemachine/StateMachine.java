@@ -11,6 +11,7 @@ public class StateMachine {
     public State blockDropState;
     public State destructionState;
     public State gemConstructionState;
+    public State gameEndState;
 
     public StateMachine(GameInstance gameInstance) {
 
@@ -20,6 +21,7 @@ public class StateMachine {
         this.blockDropState = new BlockDropState();
         this.destructionState = new DestructionState();
         this.gemConstructionState = new GemConstructionState();
+        this.gameEndState = new GameEndState();
     }
 
     public void update(float delta) {
