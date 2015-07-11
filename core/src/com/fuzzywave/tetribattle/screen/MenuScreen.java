@@ -34,7 +34,7 @@ public class MenuScreen extends AbstractScreen {
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);
-        TetriBattle.analytics.logEvent("viewed_MainMenuScreen");
+        TetriBattle.analytics.logEvent("UX", "MAIN_MENU_SHOWED");
 
         createUI();
     }
@@ -78,7 +78,7 @@ public class MenuScreen extends AbstractScreen {
 
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-                TetriBattle.analytics.logEvent("clicked_StartGameButton");
+                TetriBattle.analytics.logEvent("UX", "click", "Start Game");
                 TetriBattle.game.setScreen(new GameScreen());
             }
         });

@@ -15,7 +15,7 @@ public class PieceDropState implements State {
             gameInstance.setNextDropTime(TetriBattle.PIECE_DROP_TIMEOUT);
 
         } else {
-            TetriBattle.analytics.logEvent("GAME_END");
+            TetriBattle.analytics.logEvent("GAME", "Game Over", "LOSE");
             StateMachine stateMachine = gameInstance.getStateMachine();
             stateMachine.changeState(stateMachine.gameEndState);
         }
@@ -86,15 +86,16 @@ public class PieceDropState implements State {
     }
 
 
-
     private void dropPiece(GameInstance gameInstance, boolean byUser) {
 
         Piece currentPiece = gameInstance.getCurrentPiece();
         if (currentPiece.tryToMoveDown(gameInstance)) {
             if (currentPiece.isFastDrop()) {
-                gameInstance.setNextDropTime(TetriBattle.PIECE_FAST_DROP_TIMEOUT - (byUser ? 0 : gameInstance.getNextDropTime()));
+                gameInstance.setNextDropTime(
+                        TetriBattle.PIECE_FAST_DROP_TIMEOUT - (byUser ? 0 : gameInstance.getNextDropTime()));
             } else {
-                gameInstance.setNextDropTime(TetriBattle.PIECE_DROP_TIMEOUT - (byUser ? 0 : gameInstance.getNextDropTime()));
+                gameInstance.setNextDropTime(
+                        TetriBattle.PIECE_DROP_TIMEOUT - (byUser ? 0 : gameInstance.getNextDropTime()));
             }
         } else {
             currentPiece.setMovementDone(true);

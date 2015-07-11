@@ -1,14 +1,18 @@
 package com.fuzzywave.tetribattle.android;
 
-import com.flurry.android.FlurryAgent;
 import com.fuzzywave.tetribattle.IAnalytics;
-
-import java.util.Map;
+import com.google.android.gms.analytics.GoogleAnalytics;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.StandardExceptionParser;
+import com.google.android.gms.analytics.Tracker;
 
 
 public class AndroidAnalytics implements IAnalytics {
 
     private final android.content.Context context;
+
+    private Tracker appTracker;
+
 
     public AndroidAnalytics(android.content.Context context) {
         this.context = context;
@@ -16,47 +20,38 @@ public class AndroidAnalytics implements IAnalytics {
 
     @Override
     public void init() {
-        // configure Flurry
-        FlurryAgent.setLogEnabled(true);
-        FlurryAgent.setCaptureUncaughtExceptions(true);
-        FlurryAgent.setVersionName(BuildConfig.VERSION_NAME);
+        GoogleAnalytics analytics = GoogleAnalytics.getInstance(context);
+        appTracker = analytics.newTracker(R.xml.app_tracker);
+        appTracker.setScreenName("Tetri Battle Android");
 
-        // init Flurry
-        FlurryAgent.init(this.context, BuildConfig.FLURRY_API_KEY);
+        appTracker.send(new HitBuilders.ScreenViewBuilder().setNewSession().build());
     }
 
     @Override
-    public void logEvent(String eventId) {
-        FlurryAgent.logEvent(eventId);
+    public void logEvent(String category, String action) {
+        appTracker.send(
+                new HitBuilders.EventBuilder().setCategory(category).setAction(action).build());
     }
 
     @Override
-    public void logEvent(String eventId, Map<String, String> parameters) {
-        FlurryAgent.logEvent(eventId, parameters);
+    public void logEvent(String category, String action, String label) {
+        appTracker.send(
+                new HitBuilders.EventBuilder().setCategory(category).setAction(action).setLabel(
+                        label).build());
     }
 
     @Override
-    public void logEvent(String eventId, Map<String, String> parameters, boolean timed) {
-        FlurryAgent.logEvent(eventId, parameters, timed);
+    public void logEvent(String category, String action, String label, long value) {
+        appTracker.send(
+                new HitBuilders.EventBuilder().setCategory(category).setAction(action).setLabel(
+                        label).setValue(value).build());
     }
 
     @Override
-    public void logEvent(String eventId, boolean timed) {
-        FlurryAgent.logEvent(eventId, timed);
-    }
+    public void onError(Throwable exception) {
 
-    @Override
-    public void endTimedEvent(String eventId) {
-        FlurryAgent.endTimedEvent(eventId);
-    }
-
-    @Override
-    public void endTimedEvent(String eventId, Map<String, String> parameters) {
-        FlurryAgent.endTimedEvent(eventId, parameters);
-    }
-
-    @Override
-    public void onError(String errorId, String message, Throwable exception) {
-        FlurryAgent.onError(errorId, message, exception);
+        appTracker.send(new HitBuilders.ExceptionBuilder().setDescription(
+                new StandardExceptionParser(context, null).getDescription(
+                        Thread.currentThread().getName(), exception)).setFatal(false).build());
     }
 }

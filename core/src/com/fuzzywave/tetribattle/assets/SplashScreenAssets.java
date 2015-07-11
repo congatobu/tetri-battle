@@ -33,8 +33,6 @@ public class SplashScreenAssets {
 
     public static void load(Locale locale) {
 
-        TetriBattle.analytics.logEvent("SPLASH_SCREEN_ASSETS_LOAD", true);
-
         if (splashBundle == null) {
             if (locale == null) {
                 locale = Locale.getDefault();
@@ -44,7 +42,7 @@ public class SplashScreenAssets {
             if (locale != null) {
                 if (!splashBundle.getLocale().equals(locale)) {
                     splashBundle = I18NBundle.createBundle(Gdx.files.internal("local/splash"),
-                            locale);
+                                                           locale);
                 }
             }
         }
@@ -62,14 +60,17 @@ public class SplashScreenAssets {
         if (splashLoadingFont != null) {
             splashLoadingFont.dispose();
         }
-        splashLoadingFont = Assets.loadFont(splashLoadingFontFileName, splashLoadingFontGlyphFileName);
+        splashLoadingFont = Assets.loadFont(splashLoadingFontFileName,
+                                            splashLoadingFontGlyphFileName);
 
-        TetriBattle.analytics.endTimedEvent("SPLASH_SCREEN_ASSETS_LOAD");
+        // TODO timed event.
+        TetriBattle.analytics.logEvent("SPLASH_ASSETS", "Splash Assets Load");
     }
 
     public static class DistanceFieldShader extends ShaderProgram {
         public DistanceFieldShader() {
-            super(Gdx.files.internal("shaders/distancefield.vert"), Gdx.files.internal("shaders/distancefield.frag"));
+            super(Gdx.files.internal("shaders/distancefield.vert"),
+                  Gdx.files.internal("shaders/distancefield.frag"));
             if (!isCompiled()) {
                 throw new RuntimeException("Shader compilation failed:\n" + getLog());
             }

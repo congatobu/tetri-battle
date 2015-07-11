@@ -3,7 +3,6 @@ package com.fuzzywave.tetribattle.assets;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.assets.loaders.TextureAtlasLoader;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -39,7 +38,7 @@ public class Assets {
     public Assets() {
 
         TetriBattle.logger.debug("Creating new Assets instance.");
-        TetriBattle.analytics.logEvent("ASSETS_NEW_INSTANCE", true);
+        TetriBattle.analytics.logEvent("ASSET_MANAGER", "New Assets Instance");
 
         /*
 
@@ -63,8 +62,6 @@ public class Assets {
         */
         this.assetManager = new AssetManager();
         //this.assetManager.setLoader(TextureAtlas.class, new TextureAtlasLoader(resolver));
-
-        TetriBattle.analytics.endTimedEvent("ASSETS_NEW_INSTANCE");
     }
 
     public static BitmapFont loadFont(String fntName, String glypName) {
@@ -75,7 +72,7 @@ public class Assets {
 
     public void dispose() {
         TetriBattle.logger.info("Disposing Assets instance.");
-        TetriBattle.analytics.logEvent("ASSETS_DISPOSE");
+        TetriBattle.analytics.logEvent("ASSET_MANAGER", "Assets Dispose");
         assetManager.dispose();
     }
 
@@ -90,16 +87,13 @@ public class Assets {
     }
 
     public void loadAssets() {
-        TetriBattle.analytics.logEvent("ASSETS_LOAD", true);
-
         this.assetManager.load("game/game.atlas", TextureAtlas.class);
 
-        TetriBattle.analytics.endTimedEvent("ASSETS_LOAD");
+        // TODO timed event
+        TetriBattle.analytics.logEvent("ASSET_MANAGER", "Assets Load");
     }
 
     public void getAssets() {
-        TetriBattle.analytics.logEvent("ASSETS_GET", true);
-
         TextureAtlas textureAtlas = assetManager.get("game/game.atlas", TextureAtlas.class);
 
         tileBlueTextureRegion = textureAtlas.findRegion("tileBlue");
@@ -120,15 +114,15 @@ public class Assets {
         glassBackgroundNinePatch = textureAtlas.createPatch("glass_background");
         metalBackgroundNinePatch = textureAtlas.createPatch("metal_background");
 
-        TetriBattle.analytics.endTimedEvent("ASSETS_GET");
+        // TODO timed event
+        TetriBattle.analytics.logEvent("ASSET_MANAGER", "Assets Get");
     }
 
     public void unloadAssets() {
-        TetriBattle.analytics.logEvent("ASSETS_UNLOAD", true);
-
         assetManager.unload("game/game.atlas");
 
-        TetriBattle.analytics.endTimedEvent("ASSETS_UNLOAD");
+        // TODO timed event
+        TetriBattle.analytics.logEvent("ASSET_MANAGER", "Assets Unload");
     }
 
 

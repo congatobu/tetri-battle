@@ -4,8 +4,6 @@ package com.fuzzywave.tetribattle.desktop;
 import com.badlogic.gdx.utils.Logger;
 import com.fuzzywave.tetribattle.IAnalytics;
 
-import java.util.Map;
-
 public class DesktopAnalytics implements IAnalytics {
 
     private Logger logger;
@@ -20,38 +18,25 @@ public class DesktopAnalytics implements IAnalytics {
     }
 
     @Override
-    public void logEvent(String eventId) {
-        logger.debug("DesktopAnalytics.logEvent( " + eventId + " )");
+    public void logEvent(String category, String action) {
+        logger.debug("DesktopAnalytics.logEvent( " + category + " - " + action + " )");
     }
 
     @Override
-    public void logEvent(String eventId, Map<String, String> parameters) {
-        logger.debug("DesktopAnalytics.logEvent( " + eventId + " )");
-    }
-
-    @Override
-    public void logEvent(String eventId, Map<String, String> parameters, boolean timed) {
-        logger.debug("DesktopAnalytics.logEvent( " + eventId + " )");
-    }
-
-    @Override
-    public void logEvent(String eventId, boolean timed) {
-        logger.debug("DesktopAnalytics.logEvent( " + eventId + " )");
-    }
-
-    @Override
-    public void endTimedEvent(String eventId) {
-        logger.debug("DesktopAnalytics.endTimedEvent( " + eventId + " )");
-    }
-
-    @Override
-    public void endTimedEvent(String eventId, Map<String, String> parameters) {
-        logger.debug("DesktopAnalytics.endTimedEvent( " + eventId + " )");
-    }
-
-    @Override
-    public void onError(String errorId, String message, Throwable exception) {
+    public void logEvent(String category, String action, String label) {
         logger.debug(
-                "DesktopAnalytics.onError( " + errorId + "," + message + "," + exception.getMessage() + " )");
+                "DesktopAnalytics.logEvent( " + category + " - " + action + " - " + label + " )");
+    }
+
+    @Override
+    public void logEvent(String category, String action, String label, long value) {
+        logger.debug(
+                "DesktopAnalytics.logEvent( " + category + " - " + action + " - " + label + " - " + value + " )");
+    }
+
+
+    @Override
+    public void onError(Throwable exception) {
+        logger.debug("DesktopAnalytics.onError( " + exception.getMessage() + " )");
     }
 }
