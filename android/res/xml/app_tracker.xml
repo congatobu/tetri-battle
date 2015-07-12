@@ -1,24 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="TypographyDashes">
 
-    <!-- The apps Analytics Tracking Id -->
-    <string name="ga_trackingId">UA-53869243-4</string>
+    <!-- The Google Analytics tracking ID to which to send your data. -->
+    <string name="ga_trackingId">UA-53869243-7</string>
 
-    <!-- catch and report uncaught exceptions from the app -->
-    <bool name="ga_reportUncaughtExceptions">true</bool>
+    <!-- The name of your app, used in the app name dimension in your reports. Defaults to the value found in the package. -->
+    <!--<string name="ga_appName"> Tetri Battle Android</string>-->
 
-    <!-- Percentage of events to include in reports -->
-    <string name="ga_sampleFrequency">100.0</string>
+    <!-- The version of your application, used in the app version dimension within your reports. Defaults to the version found in the package. -->
+    <!--<string name="ga_appVersion">1.0</string>-->
 
-    <!-- Enable automatic Activity measurement -->
-    <bool name="ga_autoActivityTracking">true</bool>
+    <!-- the Local LogLevel for Analytics -->
+    <string name="ga_logLevel">verbose</string>
 
-    <!-- catch and report uncaught exceptions from the app -->
-    <bool name="ga_reportUncaughtExceptions">true</bool>
+    <!-- Frequency of automatic dispatch in seconds. Defaults to 30 minutes (1800 seconds). -->
+    <!--<integer name="ga_dispatchPeriod">30</integer>-->
 
-    <!-- How long a session exists before giving up -->
+    <!-- The sample rate to use. Default is 100.0. It can be any value between 0.0 and 100.0 -->
+    <!--<string name="ga_sampleFrequency">100.0</string>-->
+
+    <!-- If true, views (Activities) will be tracked automatically. false by default. -->
+    <!--<bool name="ga_autoActivityTracking">false</bool>-->
+
+    <!-- Tells Google Analytics to anonymize the information sent by the tracker objects by removing the last octet of the IP address prior to its storage. Note that this will slightly reduce the accuracy of geographic reporting. false by default. -->
+    <!--<string name="ga_anonymizeIp">false</string>-->
+
+    <!-- Automatically track an Exception each time an uncaught exception is thrown in your application. false by default. -->
+    <string name="ga_reportUncaughtExceptions">true</string>
+
+    <!-- The amount of time (in seconds) your application can stay in the background before the session is ended. Default is 30 seconds. -->
     <integer name="ga_sessionTimeout">-1</integer>
 
-    <screenName name="com.fuzzywave.tetribattle.android.AndroidLauncher">Android Launcher</screenName>
+    <!-- If true, enable dry run mode. Default is false. In dry run mode, the normal code paths are executed locally, but hits are not sent to Google Analytics servers. -->
+    <bool name="ga_dryRun">false</bool>
 
 </resources>

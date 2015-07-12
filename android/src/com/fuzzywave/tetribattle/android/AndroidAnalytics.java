@@ -13,7 +13,6 @@ public class AndroidAnalytics implements IAnalytics {
 
     private Tracker appTracker;
 
-
     public AndroidAnalytics(android.content.Context context) {
         this.context = context;
     }
@@ -22,6 +21,9 @@ public class AndroidAnalytics implements IAnalytics {
     public void init() {
         GoogleAnalytics analytics = GoogleAnalytics.getInstance(context);
         appTracker = analytics.newTracker(R.xml.app_tracker);
+        // Enable Advertising Features.
+        appTracker.enableAdvertisingIdCollection(true);
+        // set default screen name.
         appTracker.setScreenName("Tetri Battle Android");
 
         appTracker.send(new HitBuilders.ScreenViewBuilder().setNewSession().build());

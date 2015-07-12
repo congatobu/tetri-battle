@@ -42,7 +42,7 @@
 
         <meta-data
             android:name="com.google.android.gms.analytics.globalConfigResource"
-            android:resource="@xml/global_tracker" />
+            android:resource="@xml/app_tracker" />
 
     </application>
 
