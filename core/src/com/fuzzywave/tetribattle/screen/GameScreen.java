@@ -25,6 +25,11 @@ public class GameScreen extends AbstractScreen {
     private GameInstance playerGameInstance;
     private Rectangle playerGameBounds;
 
+    // Constant Game Speed with Maximum FPS
+    final float DT = 0.01f;
+    float accumulator = 0.0f;
+
+
     public GameScreen() {
 
         this.camera = new OrthographicCamera();
@@ -68,14 +73,17 @@ public class GameScreen extends AbstractScreen {
         TetriBattle.spriteBatch.setProjectionMatrix(camera.combined);
         TetriBattle.shapeRenderer.setProjectionMatrix(camera.combined);
 
-        // TODO implement fixed time step for game loop.
+        drawBackground();
 
-        drawBackground(delta);
-
-        playerGameInstance.update(delta);
+        accumulator += delta;
+        while(accumulator >= DT) {
+            playerGameInstance.update(DT);
+            accumulator -= DT;
+        }
+        playerGameInstance.draw();
     }
 
-    private void drawBackground(float delta) {
+    private void drawBackground() {
 
         TetriBattle.shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
 

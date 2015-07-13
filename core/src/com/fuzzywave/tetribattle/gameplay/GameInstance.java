@@ -69,26 +69,26 @@ public class GameInstance {
 
     public void update(float delta) {
         stateMachine.update(delta);
-
-        drawBackground(delta);
-
-        drawBoard(delta);
-
-        drawPiece(delta);
     }
 
-    private void drawBackground(float delta) {
+    public void draw() {
+        drawBackground();
+        drawBoard();
+        drawPiece();
+    }
+
+    private void drawBackground() {
         TetriBattle.spriteBatch.begin();
 
         TetriBattle.assets.glassBackgroundNinePatch.draw(TetriBattle.spriteBatch,
-                drawingRectangle.x - TetriBattle.BOARD_FRAME_PADDING,
-                drawingRectangle.y - TetriBattle.BOARD_FRAME_PADDING,
-                drawingRectangle.width + TetriBattle.BOARD_FRAME_PADDING * 2,
-                drawingRectangle.height + TetriBattle.BOARD_FRAME_PADDING * 2);
+                                                         drawingRectangle.x - TetriBattle.BOARD_FRAME_PADDING,
+                                                         drawingRectangle.y - TetriBattle.BOARD_FRAME_PADDING,
+                                                         drawingRectangle.width + TetriBattle.BOARD_FRAME_PADDING * 2,
+                                                         drawingRectangle.height + TetriBattle.BOARD_FRAME_PADDING * 2);
         TetriBattle.spriteBatch.end();
     }
 
-    private void drawPiece(float delta) {
+    private void drawPiece() {
         if (!currentPiece.isMovementDone()) {
             Block firstBlock = currentPiece.getFirstBlock();
             IntArray firstBlockPosition = currentPiece.getFirstBlockPosition();
@@ -104,7 +104,7 @@ public class GameInstance {
         }
     }
 
-    private void drawBoard(float delta) {
+    private void drawBoard() {
 
         TetriBattle.spriteBatch.begin();
         for (int x = 0; x < TetriBattle.BLOCKS_WIDTH; x++) {
@@ -126,16 +126,16 @@ public class GameInstance {
         if (this.destructionMarker && getBlocksVisitor(x, y) == 2) {
             TetriBattle.spriteBatch.setColor(
                     TetriBattle.spriteBatch.getColor().lerp(TetriBattle.batchAlphaColor,
-                            this.destructionInterpolation));
+                                                            this.destructionInterpolation));
 
             TetriBattle.spriteBatch.draw(textureRegion, xPixel, yPixel, blockToPixelWidth,
-                    blockToPixelHeight);
+                                         blockToPixelHeight);
 
             TetriBattle.spriteBatch.setColor(TetriBattle.batchColor);
         } else {
 
             TetriBattle.spriteBatch.draw(textureRegion, xPixel, yPixel, blockToPixelWidth,
-                    blockToPixelHeight);
+                                         blockToPixelHeight);
         }
     }
 
@@ -155,8 +155,8 @@ public class GameInstance {
         return currentPiece;
     }
 
-    public Array<Piece> getNextPieces(){
-        return  nextPieces;
+    public Array<Piece> getNextPieces() {
+        return nextPieces;
     }
 
 
@@ -177,17 +177,17 @@ public class GameInstance {
      */
     public boolean isColliding(Piece currentPiece, int horizontalMovement, int verticalMovement) {
         return isColliding(currentPiece.getFirstBlockPosition(),
-                currentPiece.getSecondBlockPosition(), horizontalMovement,
-                verticalMovement);
+                           currentPiece.getSecondBlockPosition(), horizontalMovement,
+                           verticalMovement);
     }
 
 
     public boolean isColliding(IntArray firstPos, IntArray secondPos, int horizontalMovement,
                                int verticalMovement) {
         return isColliding(firstPos.get(0) + horizontalMovement,
-                firstPos.get(1) + verticalMovement) ||
+                           firstPos.get(1) + verticalMovement) ||
                 isColliding(secondPos.get(0) + horizontalMovement,
-                        secondPos.get(1) + verticalMovement);
+                            secondPos.get(1) + verticalMovement);
     }
 
     /**
