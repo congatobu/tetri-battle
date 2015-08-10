@@ -18,7 +18,7 @@ public class MenuScreen extends AbstractScreen {
 
     public MenuScreen() {
 
-        VisUI.load(); // bunlari create ve dispose'a alabiliriz.
+        VisUI.load(VisUI.SkinScale.X2); // bunlari create ve dispose'a alabiliriz.
 
         this.stage = new Stage(new FitViewport(TetriBattle.WORLD_WIDTH_PIXEL,
                 TetriBattle.WORLD_HEIGHT_PIXEL), TetriBattle.spriteBatch);

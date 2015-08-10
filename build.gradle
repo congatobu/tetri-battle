@@ -22,7 +22,7 @@ allprojects {
         appcompat_library_version = '20.0.+'
         support_library_version = '20.0.+'
         gms_library_version = '6.5+'
-        visuiVersion = '0.7.7'
+        visuiVersion = '0.8.1'
     }
 
     repositories {
