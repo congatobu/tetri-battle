@@ -151,8 +151,9 @@ public class GameInstance {
     }
 
     private void drawDestructionTracker() {
-        if (this.destructionMarker) {
-            TetriBattle.logger.info("Draw Destruction Tracker: " + this.destructionTracker.getComboText() + " Interpolation: " + this.destructionInterpolation);
+        if (this.destructionMarker && this.destructionTracker.isCombo()) {
+
+            String comboText = this.destructionTracker.getComboText();
 
             TetriBattle.spriteBatch.begin();
             TetriBattle.spriteBatch.setShader(Assets.distanceFieldShader);
@@ -162,8 +163,8 @@ public class GameInstance {
             float baseLineShift = -8;
 
             Assets.comboFont.getData().setScale(scale);
-            layout.setText(Assets.comboFont, "COMBO", 0,
-                    "COMBO".length(),
+            layout.setText(Assets.comboFont, comboText, 0,
+                    comboText.length(),
                     Assets.comboFont.getColor(), 0, Align.center, false, null);
             Assets.distanceFieldShader.setSmoothing(smoothing / scale);
             Assets.comboFont.draw(TetriBattle.spriteBatch, layout,

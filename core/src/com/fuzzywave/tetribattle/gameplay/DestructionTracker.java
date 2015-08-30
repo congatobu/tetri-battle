@@ -40,7 +40,12 @@ public class DestructionTracker {
         this.counters.get(this.counters.size - 1).destructedBlockCount += blockCount;
     }
 
+    public boolean isCombo() {
+        return this.counters.size > 1;
+    }
+
     public String getComboText() {
-        return "COMBO";
+        int comboScore = this.counters.size - 2;
+        return ComboNames.getText(comboScore);
     }
 }
