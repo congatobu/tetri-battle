@@ -10,6 +10,7 @@ public class NewPieceState implements State {
     @Override
     public void enter(GameInstance gameInstance) {
         createRandomPiece(gameInstance);
+        gameInstance.clearDestructionTrackers();
     }
 
     @Override

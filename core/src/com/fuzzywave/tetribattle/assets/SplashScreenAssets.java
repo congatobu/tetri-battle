@@ -42,7 +42,7 @@ public class SplashScreenAssets {
             if (locale != null) {
                 if (!splashBundle.getLocale().equals(locale)) {
                     splashBundle = I18NBundle.createBundle(Gdx.files.internal("local/splash"),
-                                                           locale);
+                            locale);
                 }
             }
         }
@@ -61,29 +61,10 @@ public class SplashScreenAssets {
             splashLoadingFont.dispose();
         }
         splashLoadingFont = Assets.loadFont(splashLoadingFontFileName,
-                                            splashLoadingFontGlyphFileName);
+                splashLoadingFontGlyphFileName);
 
         // TODO timed event.
         TetriBattle.analytics.logEvent("SPLASH_ASSETS", "Splash Assets Load");
-    }
-
-    public static class DistanceFieldShader extends ShaderProgram {
-        public DistanceFieldShader() {
-            super(Gdx.files.internal("shaders/distancefield.vert"),
-                  Gdx.files.internal("shaders/distancefield.frag"));
-            if (!isCompiled()) {
-                throw new RuntimeException("Shader compilation failed:\n" + getLog());
-            }
-        }
-
-        /**
-         * @param smoothing a value between 0 and 1
-         */
-        public void setSmoothing(float smoothing) {
-            float delta = 0.5f * MathUtils.clamp(smoothing, 0, 1);
-            setUniformf("u_lower", 0.5f - delta);
-            setUniformf("u_upper", 0.5f + delta);
-        }
     }
 
 }

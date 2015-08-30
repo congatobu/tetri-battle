@@ -1,10 +1,14 @@
 package com.fuzzywave.tetribattle.gameplay;
 
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntArray;
 import com.fuzzywave.tetribattle.TetriBattle;
+import com.fuzzywave.tetribattle.assets.Assets;
+import com.fuzzywave.tetribattle.assets.SplashScreenAssets;
 import com.fuzzywave.tetribattle.gameplay.statemachine.StateMachine;
 
 import java.util.Arrays;
@@ -36,6 +40,10 @@ public class GameInstance {
     // TODO G E M s
     private GemPool gemPool;
 
+    private DestructionTracker destructionTracker;
+
+    private GlyphLayout layout = new GlyphLayout(); // TODO
+
     public GameInstance(Rectangle drawingRectangle) {
 
         this.drawingRectangle = drawingRectangle;
@@ -43,6 +51,8 @@ public class GameInstance {
         this.blockToPixelHeight = drawingRectangle.height / TetriBattle.BLOCKS_HEIGHT;
 
         random = new Random();
+
+        destructionTracker = new DestructionTracker();
 
         blocks = new Array<Block>(TetriBattle.BLOCKS_WIDTH * TetriBattle.BLOCKS_HEIGHT);
         for (int i = 0; i < TetriBattle.BLOCKS_WIDTH * TetriBattle.BLOCKS_HEIGHT; i++) {
@@ -75,16 +85,17 @@ public class GameInstance {
         drawBackground();
         drawBoard();
         drawPiece();
+        drawDestructionTracker();
     }
 
     private void drawBackground() {
         TetriBattle.spriteBatch.begin();
 
         TetriBattle.assets.glassBackgroundNinePatch.draw(TetriBattle.spriteBatch,
-                                                         drawingRectangle.x - TetriBattle.BOARD_FRAME_PADDING,
-                                                         drawingRectangle.y - TetriBattle.BOARD_FRAME_PADDING,
-                                                         drawingRectangle.width + TetriBattle.BOARD_FRAME_PADDING * 2,
-                                                         drawingRectangle.height + TetriBattle.BOARD_FRAME_PADDING * 2);
+                drawingRectangle.x - TetriBattle.BOARD_FRAME_PADDING,
+                drawingRectangle.y - TetriBattle.BOARD_FRAME_PADDING,
+                drawingRectangle.width + TetriBattle.BOARD_FRAME_PADDING * 2,
+                drawingRectangle.height + TetriBattle.BOARD_FRAME_PADDING * 2);
         TetriBattle.spriteBatch.end();
     }
 
@@ -126,16 +137,41 @@ public class GameInstance {
         if (this.destructionMarker && getBlocksVisitor(x, y) == 2) {
             TetriBattle.spriteBatch.setColor(
                     TetriBattle.spriteBatch.getColor().lerp(TetriBattle.batchAlphaColor,
-                                                            this.destructionInterpolation));
+                            this.destructionInterpolation));
 
             TetriBattle.spriteBatch.draw(textureRegion, xPixel, yPixel, blockToPixelWidth,
-                                         blockToPixelHeight);
+                    blockToPixelHeight);
 
             TetriBattle.spriteBatch.setColor(TetriBattle.batchColor);
         } else {
 
             TetriBattle.spriteBatch.draw(textureRegion, xPixel, yPixel, blockToPixelWidth,
-                                         blockToPixelHeight);
+                    blockToPixelHeight);
+        }
+    }
+
+    private void drawDestructionTracker() {
+        if (this.destructionMarker) {
+            TetriBattle.logger.info("Draw Destruction Tracker: " + this.destructionTracker.getComboText() + " Interpolation: " + this.destructionInterpolation);
+
+            TetriBattle.spriteBatch.begin();
+            TetriBattle.spriteBatch.setShader(Assets.distanceFieldShader);
+
+            float smoothing = 1 / 8f;
+            float scale = 3.0f;
+            float baseLineShift = -8;
+
+            Assets.comboFont.getData().setScale(scale);
+            layout.setText(Assets.comboFont, "COMBO", 0,
+                    "COMBO".length(),
+                    Assets.comboFont.getColor(), 0, Align.center, false, null);
+            Assets.distanceFieldShader.setSmoothing(smoothing / scale);
+            Assets.comboFont.draw(TetriBattle.spriteBatch, layout,
+                    0,
+                    this.drawingRectangle.height / 2 + scale * baseLineShift);
+
+            TetriBattle.spriteBatch.setShader(null);
+            TetriBattle.spriteBatch.end();
         }
     }
 
@@ -177,17 +213,17 @@ public class GameInstance {
      */
     public boolean isColliding(Piece currentPiece, int horizontalMovement, int verticalMovement) {
         return isColliding(currentPiece.getFirstBlockPosition(),
-                           currentPiece.getSecondBlockPosition(), horizontalMovement,
-                           verticalMovement);
+                currentPiece.getSecondBlockPosition(), horizontalMovement,
+                verticalMovement);
     }
 
 
     public boolean isColliding(IntArray firstPos, IntArray secondPos, int horizontalMovement,
                                int verticalMovement) {
         return isColliding(firstPos.get(0) + horizontalMovement,
-                           firstPos.get(1) + verticalMovement) ||
+                firstPos.get(1) + verticalMovement) ||
                 isColliding(secondPos.get(0) + horizontalMovement,
-                            secondPos.get(1) + verticalMovement);
+                        secondPos.get(1) + verticalMovement);
     }
 
     /**
@@ -316,17 +352,39 @@ public class GameInstance {
         }
     }
 
+
+    public void updateDestructionTracker() {
+
+        destructionTracker.add();
+
+        for (int x = 0; x < TetriBattle.BLOCKS_WIDTH; x++) {
+            for (int y = 0; y < TetriBattle.BLOCKS_HEIGHT; y++) {
+                if (getBlocksVisitor(x, y) == 2) {
+                    Block block = getBlock(x, y);
+                    int gemId = block.getGemId();
+                    if (gemId != -1) {
+                        gemPool.setDestructionMarker(gemId);
+                    } else {
+                        destructionTracker.addToBlockCounter(1);
+                    }
+                }
+            }
+        }
+        gemPool.updateDestructionTracker(destructionTracker);
+    }
+
+    public void clearDestructionTrackers() {
+        destructionTracker.clear();
+    }
+
     public void destroyBlocks() {
         if (destructionMarker) {
+
             for (int x = 0; x < TetriBattle.BLOCKS_WIDTH; x++) {
                 for (int y = 0; y < TetriBattle.BLOCKS_HEIGHT; y++) {
                     if (getBlocksVisitor(x, y) == 2) {
                         Block block = getBlock(x, y);
-                        int gemId = block.getGemId();
-                        if (gemId != -1) {
-                            // TODO gem destuction counter.
-                            gemPool.setDestructionMarker(gemId);
-                        }
+
                         block.setBlockType(BlockType.EMPTY);
                         block.setGemId(-1);
                     }
@@ -334,11 +392,9 @@ public class GameInstance {
             }
 
             gemPool.destroyGems();
-
             this.destructionMarker = false;
         }
     }
-
 
     public void clear() {
         for (int x = 0; x < TetriBattle.BLOCKS_WIDTH; x++) {
@@ -358,4 +414,6 @@ public class GameInstance {
     public Gem getGem(int gemId) {
         return gemPool.getGem(gemId);
     }
+
+
 }

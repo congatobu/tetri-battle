@@ -33,6 +33,9 @@ public class Assets {
 
     public Color backgroundColor = Color.valueOf("3F7CB6");
 
+    public static BitmapFont comboFont;
+    public static DistanceFieldShader distanceFieldShader = new DistanceFieldShader();
+
     private AssetManager assetManager;
 
     public Assets() {
@@ -88,6 +91,8 @@ public class Assets {
 
     public void loadAssets() {
         this.assetManager.load("game/game.atlas", TextureAtlas.class);
+
+        this.comboFont = Assets.loadFont("fonts/COMBO.fnt", "fonts/COMBO.png");
 
         // TODO timed event
         TetriBattle.analytics.logEvent("ASSET_MANAGER", "Assets Load");

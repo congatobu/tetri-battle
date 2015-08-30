@@ -19,14 +19,15 @@ public class DestructionState implements State {
         timer = 0f;
         gameInstance.setDestructionInterpolation(0f); // TODO 0 or 1 ?
 
-        markForDestruction(gameInstance);
+        if(markForDestruction(gameInstance)) {
+            gameInstance.updateDestructionTracker();
+        }
     }
-
 
     /**
      * Marks blocks for destruction.
      */
-    private void markForDestruction(GameInstance gameInstance) {
+    private boolean markForDestruction(GameInstance gameInstance) {
         gameInstance.clearBlockVisitor();
         boolean marker = false;
         for (int x = 0; x < TetriBattle.BLOCKS_WIDTH; x++) {
@@ -43,6 +44,7 @@ public class DestructionState implements State {
         }
 
         gameInstance.setDestructionMarker(marker);
+        return marker;
     }
 
     /**
@@ -123,6 +125,4 @@ public class DestructionState implements State {
     public void exit(GameInstance gameInstance) {
         gameInstance.destroyBlocks();
     }
-
-
 }

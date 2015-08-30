@@ -84,8 +84,18 @@ public class GemPool {
     public void destroyGems() {
         for (Gem gem : gemList) {
             if (gem.isActive() && gem.getDestructionMarker()) {
+
                 gem.setIsActive(false);
                 gem.setDestructionMarker(false);
+            }
+        }
+    }
+
+    public void updateDestructionTracker(DestructionTracker destructionTracker) {
+        for (Gem gem : gemList) {
+            if (gem.isActive() && gem.getDestructionMarker()) {
+
+                destructionTracker.addToGemCounter(gem.width, gem.height);
             }
         }
     }

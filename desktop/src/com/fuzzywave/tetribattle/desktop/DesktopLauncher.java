@@ -31,8 +31,8 @@ public class DesktopLauncher {
                                      "game");
             */
 
-            DesktopUtils.packTexture("/home/default/workspace/tetri-battle/assets/game/",
-                                     "/home/default/workspace/tetri-battle/android/assets/game",
+            DesktopUtils.packTexture("/home/yigiter/Workspace/tetri-battle/assets/game/",
+                                     "/home/yigiter/Workspace/tetri-battle/android/assets/game",
                                      "game");
         }
 
