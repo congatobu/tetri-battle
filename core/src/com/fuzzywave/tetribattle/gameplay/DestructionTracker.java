@@ -18,34 +18,35 @@ public class DestructionTracker {
         }
     }
 
-    private Array<DestructionCounter> counters;
+    // TODO instead of destroring and recreating them in every destruction state, get them from a pool.
+    private Array<DestructionCounter> chain;
 
     public DestructionTracker() {
-        this.counters = new Array<DestructionCounter>(8);
+        this.chain = new Array<DestructionCounter>(8);
     }
 
     public void clear() {
-        this.counters.clear();
+        this.chain.clear();
     }
 
     public void add() {
-        this.counters.add(new DestructionCounter());
+        this.chain.add(new DestructionCounter());
     }
 
     public void addToGemCounter(int width, int height) {
-        this.counters.get(this.counters.size - 1).destructedGemSizes.add(new IntegerPoint(width, height));
+        this.chain.get(this.chain.size - 1).destructedGemSizes.add(new IntegerPoint(width, height));
     }
 
     public void addToBlockCounter(int blockCount) {
-        this.counters.get(this.counters.size - 1).destructedBlockCount += blockCount;
+        this.chain.get(this.chain.size - 1).destructedBlockCount += blockCount;
     }
 
     public boolean isCombo() {
-        return this.counters.size > 1;
+        return this.chain.size > 1;
     }
 
     public String getComboText() {
-        int comboScore = this.counters.size - 2;
+        int comboScore = this.chain.size - 2;
         return ComboNames.getText(comboScore);
     }
 }

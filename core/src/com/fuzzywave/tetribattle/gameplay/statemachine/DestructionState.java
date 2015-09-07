@@ -19,7 +19,7 @@ public class DestructionState implements State {
         timer = 0f;
         gameInstance.setDestructionInterpolation(0f); // TODO 0 or 1 ?
 
-        if(markForDestruction(gameInstance)) {
+        if (markForDestruction(gameInstance)) {
             gameInstance.updateDestructionTracker();
         }
     }
@@ -35,7 +35,7 @@ public class DestructionState implements State {
 
                 Block block = gameInstance.getBlock(x, y);
                 if ((block.getBlockType().isBreaker) && (gameInstance.getBlocksVisitor(x,
-                                                                                       y) == 0)) {
+                        y) == 0)) {
                     if (allNeighbourSearch(gameInstance, block.getBlockType().color, x, y)) {
                         marker = true;
                     }
